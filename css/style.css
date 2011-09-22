@@ -1,0 +1,66 @@
+/*
+Template Name:Stocker Boy
+Theme URI: http://orisysindia.com
+Description: This this was made and published for MAD
+Author: Amruth Raj. R
+Author URI: http://amruthrajr.com
+*/
+
+a, a img, ul, li, ol {margin:0; padding:0; border:none; outline:none; text-decoration:none;list-style-type:none;}
+input, textarea {outline:none;margin:0;font-family:Arial, Helvetica, sans-serif}
+h1, h2, h3, h4, h5, h6 {margin:10px 0;}
+
+.left {float:left;}
+.right {float:right;}
+
+body {
+	margin:0;
+	background:url(../images/main-bg.jpg) repeat-x top #f9f9f9;
+	font-family:Arial, Helvetica, sans-serif
+	}
+
+#header {
+	width:100%;
+	height:59px;
+	}
+
+#header #logo {
+	height:46px;
+	margin:6px 0 0 20px;
+	float:left;
+	}
+
+#header #logo a {
+	display:block;
+	min-height:46px;
+	width:180px;
+	text-indent:-9999px;
+	background:url(../images/logo.png) no-repeat;
+	float:left;
+	}
+
+#wraper {
+	width:1000px;
+	margin:0 auto;
+	}
+
+#container {
+	width:1000px;
+	float:left;
+	}
+
+#footer {
+	width:98%;
+	height: 30px;
+	position:fixed;
+	bottom:0;
+	line-height:30px;
+	color:#999;
+	font-size:11px;
+	padding:0 1%;
+	clear:both;
+	}
+
+#footer a {
+	color:#999;
+	}

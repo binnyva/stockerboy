@@ -1,0 +1,130 @@
+body {
+	background-color:#f9f9f9;
+	margin:0;
+	padding:0;
+	overflow:hidden;
+	font-size:12px;
+	}
+
+#login-container {
+	width:360px;
+	margin:15% auto;
+	font-family: 'Open Sans', sans-serif;
+	}
+
+#login-logo {
+	width:100%;
+	text-align:center;
+	height:85px;
+	}
+
+#login-logo a {
+	display:block;
+	text-indent:-9999px;
+	background:url(../images/logo_login.png) center top no-repeat;
+	height:69px;
+	}
+
+#login-box {
+	width:100%;
+	display:block;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	-o-border-radius:5px;
+	box-shadow:0 0 5px #999;
+	-moz-box-shadow:0 0 5px #999;
+	-webkit-box-shadow:0 0 5px #999;
+	-o-box-shadow:0 0 5px #999;
+	}
+
+#login-box h3 {
+	display:block;
+	text-align:center;
+	line-height:46px;
+	background:url(../images/login-tab.png) repeat-x;
+	color:#87af40;
+	text-shadow:0 1px #fff;
+	border-radius:5px 5px 0 0;
+	-moz-border-radius:5px 5px 0 0;
+	-webkit-border-radius:5px 5px 0 0;
+	-o-border-radius:5px 5px 0 0;
+	margin:0;
+	}
+
+#login-box #inner {
+	width:320px;
+	padding:20px;
+	background-color:#fdfdfd;
+	border-radius:0 0 6px 6px ;
+	-moz-border-radius:0 0 6px 6px ;
+	-webkit-border-radius:0 0 6px 6px ;
+	-o-border-radius:0 0 6px 6px ;
+	min-height:140px;
+	}
+
+#login-box #inner label {
+	display:block;
+	text-align:center;
+	padding-bottom:8px;
+	}
+	
+#login-box #inner label .textfield {
+	display:block;
+	padding:7px;
+	border:4px solid #d1eef3;
+	width:298px;
+	box-shadow:0 0 3px #999 inset;
+	-webkit-box-shadow:0 0 3px #999 inset;
+	-moz-box-shadow:0 0 3px #999 inset;
+	-o-box-shadow:0 0 3px #999 inset;
+	border-radius:3px;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	-o-border-radius:3px;
+	outline:none;
+	color:#aeaeae;
+	}
+		
+#login-box #inner label .textfield:focus {
+	border-color:#8ed7e4;
+	box-shadow:0 0 3px #333 inset;
+	-webkit-box-shadow:0 0 3px #333 inset;
+	-moz-box-shadow:0 0 3px #333 inset;
+	-o-box-shadow:0 0 3px #333 inset;
+	}
+
+#button-row {
+	width:100%;
+	line-height:30px;
+	}
+
+.login-button {
+	margin:0;
+	border:0;
+	background:url(../images/login-button.png) no-repeat;
+	height:38px;
+	width:78px;
+	float:right;
+	cursor:pointer;
+	}
+
+#bottom {
+	width:359px;
+	height:10px;
+	background:transparent url(../images/login-bottom.jpg) center top no-repeat;
+	margin:0 auto;
+	}
+
+#Forgot {
+	display:block;
+	text-align:center;
+	color:#817f7f;
+	font:12px Helvetica, sans-serif bold;
+	line-height:40px
+	}
+	
+#Forgot a {
+	color:#3f3f3f;
+	text-decoration:none;
+	}
