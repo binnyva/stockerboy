@@ -1,3 +1,4 @@
+<script type="text/javascript" src="<?php echo base_url()?>js/ajaxupload.js"></script>
 <script type="text/javascript">
 	$('#dash').removeClass('active');
 	$('#prod').addClass('active');
@@ -27,8 +28,29 @@
 	
 	function add_designs()
 	{
-		var ptype = $('#img1').val();
-		//alert(ptype);
+		<?php
+		for($i=1;$i<=10;$i++)
+		{
+		?>
+			var ptype<?php echo $i; ?> = $('#p_type<?php echo $i; ?>').val();
+			
+			var dname<?php echo $i; ?> = $('#dname<?php echo $i; ?>').val();
+			
+			var img<?php echo $i; ?> = $('#upload_area<?php echo $i; ?>').val();
+			
+		
+			$.ajax({
+			type: "POST",
+			url: "<?= site_url('products/add_design')?>",
+			data: "ptype="+ptype<?php echo $i; ?>+'&dname='+dname<?php echo $i; ?>+'&img='+img<?php echo $i; ?>,
+			success: function(msg){
+				$('#msg_div').html(msg);
+			}
+			});
+			
+		<?php
+		}
+		?>
 		
 	}
 </script>
@@ -87,135 +109,43 @@
                  </div>
         		 
         		 <div id="add_design" class="hide">
+                 <?php
+				 	for($i=1; $i<=10; $i++)
+					{
+				 ?>
                  	<div class="row">
-                    	<select name="p_type1" id="p_type1" tabindex="1" class="select">
+                    	<select name="p_type<?php echo $i; ?>" id="p_type<?php echo $i; ?>" tabindex="1" class="select">
                           <option selected="selected">Product Type</option>
-                          <option >Prototype Combobox</option>
-                          <option>jQuery Tabs</option>
-                          <option>Common Accordion</option>
+                          	<?php foreach($product_type->result_array() as $row): ?>
+                                <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
+                            <?php endforeach; ?>
                         </select>
                         
-                        <input name="dname1" id="dname1" type="text" class="textfield-large" value="Design Name" onfocus="if(this.value=='Design Name'){this.value=''};" onblur="if(this.value==''){this.value='Design Name'};" />
+                        <input name="dname<?php echo $i; ?>" id="dname<?php echo $i; ?>" type="text" class="textfield-large" value="Design Name" onfocus="if(this.value=='Design Name'){this.value=''};" onblur="if(this.value==''){this.value='Design Name'};" />
                         
-                        <input type="file" name="img1" id="img1" >
+                        <form action="<?php echo base_url()?>js/ajaxupload.php" method="post" name="sleeker<?php echo $i; ?>" id="sleeker<?php echo $i; ?>" enctype="multipart/form-data">
+                            <input type="hidden" name="maxSize" value="9999999999" />
+                            <input type="hidden" name="maxW" value="200" />
+                            <input type="hidden" name="relPath" value="../uploads/images/" />
+                            <input type="hidden" name="colorR" value="255" />
+                            <input type="hidden" name="colorG" value="255" />
+                            <input type="hidden" name="colorB" value="255" />
+                            <input type="hidden" name="maxH" value="300" />
+                            <input type="hidden" name="filename" value="filename" />
+                            <input type="hidden" id="ids" name="ids" value="ids" />
+                            <input type="file" name="filename" onChange="ajaxUpload(this.form,'<?php echo base_url()?>js/ajaxupload.php?filename=name&amp;maxSize=9999999999&amp;maxW=750&amp;relPath=<?php echo base_url()?>uploads/images /&amp;colorR=255&amp;colorG=255&amp;colorB=255&amp;maxH=300','upload_area<?php echo $i; ?>','File Uploading Please Wait...&lt;br /&gt;&lt;img src=\'<?php echo base_url()?>images/ico/spinner.gif\' style=\'border:none\' width=\'20\' height=\'20\' border=\'0\' /&gt;','&lt;img src=\'<?php echo base_url()?>images/ico/spinner.gif\' width=\'20\' height=\'20\' style=\'border:none\' border=\'0\' /&gt; Error in Upload, check settings and path info in source code.'); return false;" />
+                            
+                            <div style="margin-top:-5px;color:#666; float:right; line-height:30px; font-size:12px;">
+                            <input type="hidden" id="upload_area<?php echo $i; ?>" name="upload_area<?php echo $i; ?>" value="" />
+                           	</div>
+                          
+                        </form>
+                        
                     </div>
-                    
-                    <div class="row">
-                    	<select name="p_type2" id="p_type2" tabindex="1" class="select">
-                          <option selected="selected">Product Type</option>
-                          <option >Prototype Combobox</option>
-                          <option>jQuery Tabs</option>
-                          <option>Common Accordion</option>
-                        </select>
-                        
-                        <input name="dname2" id="dname2" type="text" class="textfield-large" value="Design Name" onfocus="if(this.value=='Design Name'){this.value=''};" onblur="if(this.value==''){this.value='Design Name'};" />
-                        
-                        <input type="file" name="img2" id="img2" >
-                    </div>
-                    
-                    <div class="row">
-                    	<select name="p_type3" id="p_type3" tabindex="1" class="select">
-                          <option selected="selected">Product Type</option>
-                          <option >Prototype Combobox</option>
-                          <option>jQuery Tabs</option>
-                          <option>Common Accordion</option>
-                        </select>
-                        
-                        <input name="dname3" id="dname3" type="text" class="textfield-large" value="Design Name" onfocus="if(this.value=='Design Name'){this.value=''};" onblur="if(this.value==''){this.value='Design Name'};" />
-                        
-                        <input type="file" name="img3" id="img3" >
-                    </div>
-                    
-                    <div class="row">
-                    	<select name="p_type4" id="p_type4" tabindex="1" class="select">
-                          <option selected="selected">Product Type</option>
-                          <option >Prototype Combobox</option>
-                          <option>jQuery Tabs</option>
-                          <option>Common Accordion</option>
-                        </select>
-                        
-                        <input name="dname4" id="dname4" type="text" class="textfield-large" value="Design Name" onfocus="if(this.value=='Design Name'){this.value=''};" onblur="if(this.value==''){this.value='Design Name'};" />
-                        
-                        <input type="file" name="img4" id="img4" >
-                    </div>
-                    
-                    <div class="row">
-                    	<select name="p_type5" id="p_type5" tabindex="1" class="select">
-                          <option selected="selected">Product Type</option>
-                          <option >Prototype Combobox</option>
-                          <option>jQuery Tabs</option>
-                          <option>Common Accordion</option>
-                        </select>
-                        
-                        <input name="dname5" id="dname5" type="text" class="textfield-large" value="Design Name" onfocus="if(this.value=='Design Name'){this.value=''};" onblur="if(this.value==''){this.value='Design Name'};" />
-                        
-                        <input type="file" name="img5" id="img5" >
-                    </div>
-                    
-                    <div class="row">
-                    	<select name="p_type6" id="p_type6" tabindex="1" class="select">
-                          <option selected="selected">Product Type</option>
-                          <option >Prototype Combobox</option>
-                          <option>jQuery Tabs</option>
-                          <option>Common Accordion</option>
-                        </select>
-                        
-                        <input name="dname6" id="dname6" type="text" class="textfield-large" value="Design Name" onfocus="if(this.value=='Design Name'){this.value=''};" onblur="if(this.value==''){this.value='Design Name'};" />
-                        
-                        <input type="file" name="img6" id="img6" >
-                    </div>
-                    
-                    <div class="row">
-                    	<select name="p_type7" id="p_type7" tabindex="1" class="select">
-                          <option selected="selected">Product Type</option>
-                          <option >Prototype Combobox</option>
-                          <option>jQuery Tabs</option>
-                          <option>Common Accordion</option>
-                        </select>
-                        
-                        <input name="dname7" id="dname7" type="text" class="textfield-large" value="Design Name" onfocus="if(this.value=='Design Name'){this.value=''};" onblur="if(this.value==''){this.value='Design Name'};" />
-                        
-                        <input type="file" name="img7" id="img7" >
-                    </div>
-                    
-                    <div class="row">
-                    	<select name="p_type8" id="p_type8" tabindex="1" class="select">
-                          <option selected="selected">Product Type</option>
-                          <option >Prototype Combobox</option>
-                          <option>jQuery Tabs</option>
-                          <option>Common Accordion</option>
-                        </select>
-                        
-                        <input name="dname8" id="dname8" type="text" class="textfield-large" value="Design Name" onfocus="if(this.value=='Design Name'){this.value=''};" onblur="if(this.value==''){this.value='Design Name'};" />
-                        
-                        <input type="file" name="img8" id="img8" >
-                    </div>
-                    
-                    <div class="row">
-                    	<select name="p_type9" id="p_type9" tabindex="1" class="select">
-                          <option selected="selected">Product Type</option>
-                          <option >Prototype Combobox</option>
-                          <option>jQuery Tabs</option>
-                          <option>Common Accordion</option>
-                        </select>
-                        
-                        <input name="dname9" id="dname9" type="text" class="textfield-large" value="Design Name" onfocus="if(this.value=='Design Name'){this.value=''};" onblur="if(this.value==''){this.value='Design Name'};" />
-                        
-                        <input type="file" name="img9" id="img9" >
-                    </div>
-                    
-                    <div class="row">
-                    	<select name="p_type10" id="p_type10" tabindex="1" class="select">
-                          <option selected="selected">Product Type</option>
-                          <option >Prototype Combobox</option>
-                          <option>jQuery Tabs</option>
-                          <option>Common Accordion</option>
-                        </select>
-                        
-                        <input name="dname10" id="dname10" type="text" class="textfield-large" value="Design Name" onfocus="if(this.value=='Design Name'){this.value=''};" onblur="if(this.value==''){this.value='Design Name'};" />
-                        
-                        <input type="file" name="img10" id="img10" >
-                    </div>
+                    <?php
+					}
+					?>
+                   
                     
                     <div class="row">
                     	<input name="" type="button" class="addButton" value="" onClick="javascript:add_designs();" />

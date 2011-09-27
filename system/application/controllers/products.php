@@ -45,7 +45,9 @@ class Products extends Controller  {
 		$this->load->view('layout/header',$data);
 		//$upcomming_classes = $this->class_model->get_upcomming_classes();
 		//$this->load->view('dashboard/dashboard', array('upcomming_classes'=>$upcomming_classes));
-		$this->load->view('products/products');
+		$data['product_type'] = $this->product_model->get_producttype();
+		
+		$this->load->view('products/products',$data);
 		$this->load->view('layout/footer');
     }
 	
@@ -67,5 +69,31 @@ class Products extends Controller  {
 		{
 			echo "Product type already taken";
 		}
+	}
+	
+	function add_design()
+	{
+		$data['ptype'] = $_REQUEST['ptype'];
+				
+		$data['dname'] = $_REQUEST['dname'];
+				
+		$data['img'] = $_REQUEST['img'];
+		
+		
+		
+			$returnFlag = $this->product_model->adddesign($data);
+			
+			if($returnFlag != '' && $returnFlag != 'designname_already_taken')
+			{
+				echo "Added";
+			}
+			else
+			{
+				echo "Design name already taken";
+			}
+		
+		
+		
+		
 	}
 }
