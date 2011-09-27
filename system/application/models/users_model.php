@@ -31,7 +31,7 @@ class Users_model extends Model {
       	$username= $data['username'];
         $password = $data['password'];
 		
-		$query = $this->db->where('email', $username)->where('password',$password)->where('status','1')->get("user");
+		$query = $this->db->where('email', $username)->where('password',$password)->where('status','1')->get("User");
         if($query->num_rows() > 0) {
 			$user = $query->first_row();
    			$memberCredentials['id'] = $user->id;

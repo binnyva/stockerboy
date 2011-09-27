@@ -16,20 +16,17 @@ class Product_model extends Model {
     function Product_model() {
         parent::Model();
         $this->ci = &get_instance();
-       //$this->city_id = $this->ci->session->userdata('city_id');
-        //$this->project_id = $this->ci->session->userdata('project_id');
     }
 	
 	/*
 			Function to add product type
 	*/
-	
 	function addproducttype($data)
 	{
 		$ptype  = trim($data['ptype']);
 		
 		$this->db->select('*');
-        $this->db->from('product');
+        $this->db->from('Product');
         $this->db->where('name',$ptype);
         $result = $this->db->get();
 		
@@ -39,7 +36,7 @@ class Product_model extends Model {
 								 );
 								   
                 $this->db->set($ptypeInfo);
-                $this->db->insert('product');
+                $this->db->insert('Product');
 				                
 				return ($this->db->affected_rows() > 0) ? $this->db->insert_id(): false ;
 	
