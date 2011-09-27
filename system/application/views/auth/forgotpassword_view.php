@@ -15,21 +15,18 @@
     
     <div id="inner">
     <div class="field" style="color:#CC0000; text-align:center;"><?php echo $message;?></div>
-    <form action="<?php echo site_url('auth/login'); ?>" method="post" >
+    <form action="<?php echo site_url('auth/forgotpassword'); ?>" method="post" >
    	  <label><input name="email" id="email" type="text" class="textfield" value="Email ID" onfocus="if(this.value=='Email ID'){this.value=''};" onblur="if(this.value==''){this.value='Email ID'};" /></label>
     	<label>
-    	  <input name="password" id="password" type="password" class="textfield" value="Password" onfocus="if(this.value=='Password'){this.value=''};" onblur="if(this.value==''){this.value='Password'};" />
-  	  </label>
+    	 
     	<div id="button-row">
-    	    <label style="float:left; color:#555555;" ><input type="checkbox" name="checkbox" id="checkbox"/>
-    	    Remember me on this computer</label>
+    	    
             <input name="" value="" type="submit" class="login-button" />
     	</div>
         </form>
     </div>
   </div>
-  <div id="bottom"></div>
-  <div id="Forgot">Forgot your password? <a href="<?php echo site_url('auth/forgotpassword'); ?>">Click here to reset it.</a></div>
+  
 </div>
 </body>
 </html>

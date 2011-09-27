@@ -175,7 +175,7 @@ Class User_auth {
 			$password_message = <<<END
 Hey {$user->name},
 
-MADApp password reminder...
+Stockerboy password reminder...
 Username: {$user->email}
 Password: {$user->password}
 Login At: http://makeadiff.in/madapp/
@@ -186,7 +186,7 @@ MADApp
 END;
 
 			$this->ci->email->to($user->email);
-			$this->ci->email->subject('MADApp Password Reminder');
+			$this->ci->email->subject('Stockerboy Password Reminder');
 			$this->ci->email->message($password_message);
 			$this->ci->email->send();
 		}

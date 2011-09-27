@@ -47,5 +47,42 @@ class Users_model extends Model {
            return false;
         }
     }
+	
+	
+	function search_users($data) {
+		$this->db->select('User.id,User.name,User.email,User.password,User.phone, City.name as city_name');
+		$this->db->from('User');
+		$this->db->join('City', 'City.id = User.city_id' ,'left');
+		
+		
+		if(!isset($data['status'])) $data['status'] = 1;
+		if($data['status'] !== false) $this->db->where('User.status', $data['status']); // Setting status as 'false' gets you even the deleted users
+		
+		
+		if(isset($data['city_id']) and $data['city_id'] != 0) $this->db->where('User.city_id', $data['city_id']);
+		else if(!isset($data['city_id'])) $this->db->where('User.city_id', $this->city_id);
+		
+		if(!empty($data['name'])) $this->db->like('User.name', $data['name']);
+		if(!empty($data['phone'])) $this->db->where('User.phone', $data['phone']);
+		if(!empty($data['email'])) $this->db->where('User.email', $data['email']);
+		
+		
+		$this->db->orderby('User.name');
+		
+		$all_users = $this->db->get()->result();
+		//echo $this->db->last_query();
+
+		$return = array();
+		/*foreach($all_users as $user) {
+			// Get the batches for this User. An user can have two batches. That's why I don't do join to get this date.
+			//$user->batches = colFormat($this->db->where('user_id',$user->id)->get('UserBatch')->result_array()); // :SLOW:
+			
+			// Gets the UserGroup of the users...
+			if(!empty($data['get_user_groups'])) $user->groups = $this->get_user_groups_of_user($user->id);
+			
+			$return[$user->id] = $user;
+		}*/
+		return $return;
+	}
 
 }
