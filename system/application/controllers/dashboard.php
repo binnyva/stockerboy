@@ -23,10 +23,6 @@ class Dashboard extends Controller  {
 		
 		$this->load->helper('url');
         $this->load->helper('form');
-		//$this->load->model('center_model');
-		//$this->load->model('class_model');
-		//$this->load->model('kids_model');
-		//$this->load->model('level_model');
     }
 	
     /**
@@ -37,15 +33,20 @@ class Dashboard extends Controller  {
     **/
     function dashboard_view() {	
 		$data['title'] = 'Stocker Boy | Dashboard';
+		$this->load->model('Report_Model', 'report_model');
 		
-		/*if($this->input->post('city_id') and $this->user_auth->check_permission('change_city')) {
-			$this->session->set_userdata('city_id', $this->input->post('city_id'));
-		}*/
 		
 		$this->load->view('layout/header',$data);
-		//$upcomming_classes = $this->class_model->get_upcomming_classes();
-		//$this->load->view('dashboard/dashboard', array('upcomming_classes'=>$upcomming_classes));
-		$this->load->view('dashboard/dashboard');
+		
+		$data['total_sales'] = $this->report_model->total_sales_this_week();
+		$data['total_sales_last_week'] = $this->report_model->total_sales_last_week();
+		$data['total_revenue'] = $this->report_model->total_revenue_this_week();
+		$data['total_revenue_last_week'] = $this->report_model->total_revenue_last_week();
+		$data['total_finance'] = $this->report_model->total_finance_this_week();
+		$data['total_finance_last_week'] = $this->report_model->total_finance_last_week();
+		$data['leaderboard_sale'] = $this->report_model->leaderboard_sale();
+		
+		$this->load->view('dashboard/dashboard', $data);
 		$this->load->view('layout/footer');
     }
 }

@@ -29,7 +29,7 @@ class Product_model extends Model {
 		$ptype  = trim($data['ptype']);
 		
 		$this->db->select('*');
-        $this->db->from('product');
+        $this->db->from('Product');
         $this->db->where('name',$ptype);
         $result = $this->db->get();
 		
@@ -57,7 +57,7 @@ class Product_model extends Model {
 		$img  = trim($data['img']);
 		
 		$this->db->select('*');
-        $this->db->from('design');
+        $this->db->from('Design');
         $this->db->where('name',$dname);
         $result = $this->db->get();
 		
@@ -69,7 +69,7 @@ class Product_model extends Model {
 								 );
 								   
                 $this->db->set($designInfo);
-                $this->db->insert('design');
+                $this->db->insert('Design');
 				                
 				return ($this->db->affected_rows() > 0) ? $this->db->insert_id(): false ;
 	
@@ -83,7 +83,7 @@ class Product_model extends Model {
 	function get_producttype()
 	{
 		$this->db->select('*');
-        $this->db->from('product');
+        $this->db->from('Product');
         $result = $this->db->get();
 		return $result;
 	}
