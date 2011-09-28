@@ -80,6 +80,10 @@ class Product_model extends Model {
             }
 	}
 	
+	/*
+		function to get product name
+	*/
+	
 	function get_producttype()
 	{
 		$this->db->select('*');
@@ -88,4 +92,141 @@ class Product_model extends Model {
 		return $result;
 	}
 	
+	/*
+		function to get design
+	*/
+	
+	function get_design()
+	{
+		$this->db->select('*');
+        $this->db->from('design');
+        $result = $this->db->get();
+		return $result;
+	}
+	
+	function addsize($data)
+	{
+		$ptype  = trim($data['ptype']);
+		$design  = trim($data['design']);
+		$size  = trim($data['size']);
+		
+		$this->db->select('*');
+        $this->db->from('size');
+        $this->db->where('product_id',$ptype);
+		$this->db->where('design_id',$design);
+		$this->db->where('size',$size);
+        $result = $this->db->get();
+		
+        	if($result->num_rows() == 0) 
+            {
+                $sizeInfo = array( 'product_id'  => $ptype,
+									'design_id'  => $design,
+									'size'  => $size
+								 );
+								   
+                $this->db->set($sizeInfo);
+                $this->db->insert('size');
+				                
+				return ($this->db->affected_rows() > 0) ? $this->db->insert_id(): false ;
+	
+            }
+			else
+            {
+                return 'size_already_taken';
+            }
+            
+	}
+	
+	function addcolor($data)
+	{
+		$ptype  = trim($data['ptype']);
+		$design  = trim($data['design']);
+		$color  = trim($data['color']);
+		
+		$this->db->select('*');
+        $this->db->from('color');
+        $this->db->where('product_id',$ptype);
+		$this->db->where('design_id',$design);
+		$this->db->where('color',$color);
+        $result = $this->db->get();
+		
+        	if($result->num_rows() == 0) 
+            {
+                $colorInfo = array( 'product_id'  => $ptype,
+									'design_id'  => $design,
+									'color'  => $color
+								 );
+								   
+                $this->db->set($colorInfo);
+                $this->db->insert('color');
+				                
+				return ($this->db->affected_rows() > 0) ? $this->db->insert_id(): false ;
+	
+            }
+			else
+            {
+                return 'color_already_taken';
+            }
+            
+	}
+	
+	function get_designs($pid)
+	{
+		$this->db->select('*');
+        $this->db->from('design');
+		$this->db->where('product_id',$pid);
+        $result = $this->db->get();
+		return $result;
+	}
+	
+	
+	function get_size($pid,$did)
+	{
+		$this->db->select('*');
+        $this->db->from('size');
+		$this->db->where('product_id',$pid);
+		$this->db->where('design_id',$did);
+        $result = $this->db->get();
+		return $result;
+	}
+	
+	function get_color($pid,$did)
+	{
+		$this->db->select('*');
+        $this->db->from('color');
+		$this->db->where('product_id',$pid);
+		$this->db->where('design_id',$did);
+        $result = $this->db->get();
+		return $result;
+	}
+	
+	
+	function additemcode($data)
+	{
+		$ptype  = trim($data['ptype']);
+		$design  = trim($data['design']);
+		$size  = trim($data['size']);
+		$color  = trim($data['color']);
+		
+		$sex  = trim($data['sex']);
+		$mrp  = trim($data['mrp']);
+		$national  = trim($data['national']);
+		$city  = trim($data['city']);
+		
+		$itemInfo = array( 'product_id'  => $ptype,
+							'design_id'  => $design,
+							'size'  => $size,
+							'sex'  => $sex,
+							'color'  => $color,
+							'price'  => $mrp,
+							'national_cut'  => $national,
+							'city_cut'  => $city
+						 );
+								   
+		$this->db->set($itemInfo);
+		$this->db->insert('item');
+						
+		return ($this->db->affected_rows() > 0) ? $this->db->insert_id(): false ;
+	
+	}
 }

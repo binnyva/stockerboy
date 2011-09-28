@@ -6,10 +6,61 @@
 	$('#sls').removeClass('active');
 	$('#fin').removeClass('active');
 	
+	function design_drop(pid)
+	{
+		$.ajax({
+		type: "POST",
+		url: "<?= site_url('products/get_design')?>",
+		data: "pid="+pid,
+		success: function(data){
+			$('#design_div').html(data);
+		}
+		});	
+	}
+	
+	function design_drop_color(pid)
+	{
+		$.ajax({
+		type: "POST",
+		url: "<?= site_url('products/get_design_color')?>",
+		data: "pid="+pid,
+		success: function(data){
+			$('#designcolor_div').html(data);
+		}
+		});	
+	}
+	
+	function design_drop_code(pid)
+	{
+		$.ajax({
+		type: "POST",
+		url: "<?= site_url('products/get_design_code')?>",
+		data: "pid="+pid,
+		success: function(data){
+			$('#code_design').html(data);
+		}
+		});	
+	}
+	
+	function size_color_drop(did)
+	{
+		//alert(did);
+		var pid = $('#cptype').val();
+		//alert(pid);
+		$.ajax({
+		type: "POST",
+		url: "<?= site_url('products/get_size_color')?>",
+		data: "pid="+pid+'&did='+did,
+		success: function(data){
+			$('#sizecolor_div').html(data);
+		}
+		});	
+	}
+	
 	function add_product_type()
 	{
 		var ptype = $('#pro_type').val();
-		if(ptype == "")
+		if(ptype == "Add product type")
 		{
 				alert("Enter Product Type");
 		}
@@ -19,6 +70,66 @@
 			type: "POST",
 			url: "<?= site_url('products/add_product_type')?>",
 			data: "ptype="+ptype,
+			success: function(msg){
+				$('#msg_div').html(msg);
+			}
+			});
+		}
+	}
+	
+	function add_size()
+	{
+		var ptype = $('#sptype').val();
+		var design = $('#sdesign').val();
+		var size = $('#size').val();
+		if(ptype == "")
+		{
+				alert("Enter Product Type");
+		}
+		else if(design == "")
+		{
+			alert("Enter Design");
+		}
+		else if(size == "")
+		{
+			alert("Enter Size");
+		}
+		else
+		{
+			$.ajax({
+			type: "POST",
+			url: "<?= site_url('products/add_size')?>",
+			data: "ptype="+ptype+'&design='+design+'&size='+size,
+			success: function(msg){
+				$('#msg_div').html(msg);
+			}
+			});
+		}
+	}
+	
+	function add_color()
+	{
+		var ptype = $('#ptype').val();
+		var design = $('#design').val();
+		var color = $('#color').val();
+		if(ptype == "")
+		{
+				alert("Enter Product Type");
+		}
+		else if(design == "")
+		{
+			alert("Enter Design");
+		}
+		else if(color == "Color")
+		{
+			alert("Enter Color");
+		}
+		else
+		{
+			$.ajax({
+			type: "POST",
+			url: "<?= site_url('products/add_color')?>",
+			data: "ptype="+ptype+'&design='+design+'&color='+color,
 			success: function(msg){
 				$('#msg_div').html(msg);
 			}
@@ -53,6 +164,63 @@
 		?>
 		
 	}
+	
+	function add_itemcode()
+	{
+		var ptype = $('#cptype').val();
+		var design = $('#cdesign').val();
+		var size = $('#csize').val();
+		var color = $('#cod_color').val();
+		
+		var sex = $('#sex').val();
+		var mrp = $('#mrp').val();
+		var national = $('#national').val();
+		var city = $('#city').val();
+		
+		if(ptype == "")
+		{
+				alert("Enter Product Type");
+		}
+		else if(design == "")
+		{
+			alert("Enter Design");
+		}
+		else if(size == "")
+		{
+			alert("Enter Size");
+		}
+		else if(color == "")
+		{
+			alert("Enter Color");
+		}
+		else if(sex == "")
+		{
+			alert("Enter Sex");
+		}
+		else if(mrp == "MRP")
+		{
+			alert("Enter MRP");
+		}
+		else if(national == "National Cut")
+		{
+			alert("Enter National Cut");
+		}
+		else if(city == "City Cut")
+		{
+			alert("Enter City Cut");
+		}
+		else
+		{
+			$.ajax({
+			type: "POST",
+			url: "<?= site_url('products/add_itemcode')?>",
+			data: "ptype="+ptype+'&design='+design+'&size='+size+'&color='+color+'&sex='+sex+'&mrp='+mrp+'&national='+national+'&city='+city,
+			success: function(msg){
+				$('#msg_div').html(msg);
+			}
+			});
+		}
+	}
 </script>
 <div id="wraper">
   <div id="container">
@@ -81,30 +249,58 @@
         		<div id="msg_div"></div>
         		<div id="add_product">
                 <div class="padd">
-                	<input name="pro_type" id="pro_type" type="text" class="textfield-large" value="" />
+                	<input name="pro_type" id="pro_type" type="text" class="textfield-large" value="Add product type" onfocus="if(this.value=='Add product type'){this.value=''};" onblur="if(this.value==''){this.value='Add product type'};" />
                 	<input name="" type="button" class="addButton" value="" onClick="javascript:add_product_type();" />
                 </div>
         		</div>
         		 
         		 <div id="add_size" class="hide">
+                 <div class="padd">
+        		 <select name="sptype" id="sptype" tabindex="1" class="select" onchange="javascript:design_drop(this.value);">
+                  <option value="">Product Type</option>
+                  <?php foreach($product_type->result_array() as $sprow): ?>
+                      <option value="<?= $sprow['id'] ?>"><?= $sprow['name'] ?></option>
+                  <?php endforeach; ?>
+                </select>
+                <div id="design_div">
+                <select name="sdesign" id="sdesign" tabindex="1" class="select">
+                  <option value="">Design</option>
+                  <?php /*?><?php foreach($design->result_array() as $sdrow): ?>
+                      <option value="<?= $sdrow['id'] ?>"><?= $sdrow['name'] ?></option>
+                  <?php endforeach; ?><?php */?>
+                </select>
+                </div>
+                 <select name="size" id="size" tabindex="1" class="select">
+                  <option value="">Size</option>
+                  <option value="XS">XS</option>
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                  <option value="XL">XL</option>
+                  <option value="XXL">XXL</option>
+                </select>
+                <input name="" type="button" class="addButton" value="" onClick="javascript:add_size();" />
+                 </div>
         		 </div>
         		 
         		 <div id="add_color" class="hide">
                  <div class="padd">
-        		 <select name="ptype" id="ptype" tabindex="1" class="select">
-                  <option selected="selected">Product Type</option>
-                  <option >Prototype Combobox</option>
-                  <option>jQuery Tabs</option>
-                  <option>Common Accordion</option>
+        		 <select name="ptype" id="ptype" tabindex="1" class="select" onchange="javascript:design_drop_color(this.value);">
+                  <option value="">Product Type</option>
+                  <?php foreach($product_type->result_array() as $prow): ?>
+                      <option value="<?= $prow['id'] ?>"><?= $prow['name'] ?></option>
+                  <?php endforeach; ?>
                 </select>
+                <div id="designcolor_div">
                 <select name="design" id="design" tabindex="1" class="select">
-                  <option selected="selected">Design</option>
-                  <option >Prototype Combobox</option>
-                  <option>jQuery Tabs</option>
-                  <option>Common Accordion</option>
+                  <option value="">Design</option>
+                  <?php /*?><?php foreach($design->result_array() as $drow): ?>
+                      <option value="<?= $drow['id'] ?>"><?= $drow['name'] ?></option>
+                  <?php endforeach; ?><?php */?>
                 </select>
-                <input name="color" id="color" type="text" class="text" value="" />
-                <input name="" type="button" class="addButton" />
+                </div>
+                <input name="color" id="color" type="text" class="text" value="Color" onfocus="if(this.value=='Color'){this.value=''};" onblur="if(this.value==''){this.value='Color'};" />
+                <input name="" type="button" class="addButton" value="" onClick="javascript:add_color();" />
                  </div>
                  </div>
         		 
@@ -153,6 +349,56 @@
         		 </div>
         		 
                  <div id="add_code" class="hide">
+                 <div class="padd3">
+                                  
+        		 <select name="cptype" id="cptype" tabindex="1" class="select" onchange="javascript:design_drop_code(this.value);">
+                  <option value="">Product Type</option>
+                  <?php foreach($product_type->result_array() as $cprow): ?>
+                      <option value="<?= $cprow['id'] ?>"><?= $cprow['name'] ?></option>
+                  <?php endforeach; ?>
+                </select>
+                <div id="code_design">
+                <select name="cdesign" id="cdesign" tabindex="1" class="select">
+                  <option value="">Design</option>
+                  <?php /*?><?php foreach($design->result_array() as $cdrow): ?>
+                      <option value="<?= $cdrow['id'] ?>"><?= $cdrow['name'] ?></option>
+                  <?php endforeach; ?><?php */?>
+                </select>
+                </div>
+                <div id="sizecolor_div">
+                <select name="csize" id="csize" tabindex="1" class="select">
+                  <option value="">Size</option>
+                  
+                </select>
+                <select name="cod_color" id="cod_color" tabindex="1" class="select">
+                  <option value="">Color</option>
+                  
+                </select>
+                </div>
+                </div>
+                
+                <div class="padd3">
+                
+                <select name="sex" id="sex" tabindex="1" class="select">
+                  <option value="">Sex</option>
+                  <option value="m">Male</option>
+                  <option value="f">Female</option>
+                </select>
+                
+                <input name="mrp" id="mrp" type="text" class="text" value="MRP" onfocus="if(this.value=='MRP'){this.value=''};" onblur="if(this.value==''){this.value='MRP'};" />
+                
+                <input name="national" id="national" type="text" class="text" value="National Cut" onfocus="if(this.value=='National Cut'){this.value=''};" onblur="if(this.value==''){this.value='National Cut'};" />
+                
+                <input name="city" id="city" type="text" class="text" value="City Cut" onfocus="if(this.value=='City Cut'){this.value=''};" onblur="if(this.value==''){this.value='City Cut'};" />
+                
+                
+                
+                
+                 </div>
+                 <div class="padd3">
+                 	
+                 	<input name="" type="button" class="addButton" value="" onClick="javascript:add_itemcode();" />
+                 </div>
         		 </div>
         	 </div> <!-- END List Wrap -->
          

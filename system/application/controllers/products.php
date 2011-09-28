@@ -46,6 +46,7 @@ class Products extends Controller  {
 		//$upcomming_classes = $this->class_model->get_upcomming_classes();
 		//$this->load->view('dashboard/dashboard', array('upcomming_classes'=>$upcomming_classes));
 		$data['product_type'] = $this->product_model->get_producttype();
+		$data['design'] = $this->product_model->get_design();
 		
 		$this->load->view('products/products',$data);
 		$this->load->view('layout/footer');
@@ -91,9 +92,100 @@ class Products extends Controller  {
 			{
 				echo "Design name already taken";
 			}
+	}
+	
+	function add_size()
+	{
+		$data['ptype'] = $_REQUEST['ptype'];
+		$data['design'] = $_REQUEST['design'];
+		$data['size'] = $_REQUEST['size'];
 		
+		$returnFlag = $this->product_model->addsize($data);
 		
+		if($returnFlag != '' && $returnFlag != 'size_already_taken')
+		{
+			echo "Added";
+		}
+		else
+		{
+			echo "Size already taken";
+		}
+	}
+	
+	function add_color()
+	{
+		$data['ptype'] = $_REQUEST['ptype'];
+		$data['design'] = $_REQUEST['design'];
+		$data['color'] = $_REQUEST['color'];
 		
+		$returnFlag = $this->product_model->addcolor($data);
 		
+		if($returnFlag != '' && $returnFlag != 'color_already_taken')
+		{
+			echo "Added";
+		}
+		else
+		{
+			echo "Color already taken";
+		}
+	}
+	
+	function get_design()
+	{
+		$pid=$_REQUEST['pid'];
+		$data= $this->product_model->get_designs($pid);
+		$content['designs'] = $data->result_array();
+		$this->load->view('products/design',$content);
+	}
+	
+	function get_design_color()
+	{
+		$pid=$_REQUEST['pid'];
+		$data= $this->product_model->get_designs($pid);
+		$content['designs'] = $data->result_array();
+		$this->load->view('products/design_color',$content);
+	}
+	
+	function get_design_code()
+	{
+		$pid=$_REQUEST['pid'];
+		$data= $this->product_model->get_designs($pid);
+		$content['designs'] = $data->result_array();
+		$this->load->view('products/design_code',$content);
+	}
+	
+	function get_size_color()
+	{
+		$pid=$_REQUEST['pid'];
+		$did=$_REQUEST['did'];
+		$data= $this->product_model->get_size($pid,$did);
+		$content['designs'] = $data->result_array();
+		$data= $this->product_model->get_color($pid,$did);
+		$content['colors'] = $data->result_array();
+		$this->load->view('products/size_color',$content);
+	}
+	
+	function add_itemcode()
+	{
+		$data['ptype'] = $_REQUEST['ptype'];
+		$data['design'] = $_REQUEST['design'];
+		$data['color'] = $_REQUEST['color'];
+		$data['size'] = $_REQUEST['size'];
+		
+		$data['sex'] = $_REQUEST['sex'];
+		$data['mrp'] = $_REQUEST['mrp'];
+		$data['national'] = $_REQUEST['national'];
+		$data['city'] = $_REQUEST['city'];
+		
+		$returnFlag = $this->product_model->additemcode($data);
+		
+		if($returnFlag != '')
+		{
+			echo "Added";
+		}
+		else
+		{
+			echo "Error";
+		}
 	}
 }
