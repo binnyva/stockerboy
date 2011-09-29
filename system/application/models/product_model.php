@@ -204,6 +204,7 @@ class Product_model extends Model {
 	function additemcode($data)
 	{
 		$ptype  = trim($data['ptype']);
+		$code  = trim($data['item_code']);
 		$design  = trim($data['design']);
 		$size  = trim($data['size']);
 		$color  = trim($data['color']);
@@ -213,7 +214,8 @@ class Product_model extends Model {
 		$national  = trim($data['national']);
 		$city  = trim($data['city']);
 		
-		$itemInfo = array( 'product_id'  => $ptype,
+		$itemInfo = array( 'code'  => $code,
+							'product_id'  => $ptype,
 							'design_id'  => $design,
 							'size'  => $size,
 							'sex'  => $sex,

@@ -232,7 +232,95 @@
     
         <div class="tab_container">
             <div id="tab1" class="tab_content">
-                <!--Content-->
+              <div id="example-two">
+        	<div class="list-wrap">
+        		<div>
+        		  <div class="padd2">
+                  <div class="row" style="margin-bottom:10px;">
+                  <input name="" type="text" class="textfield" style="width:97%" />
+                  </div>
+                  <div class="row" style="margin-bottom:10px;">
+                  <input name="" type="text" class="text"/>
+<label for="select"></label>
+                    <select name="select" class="select" id="select">
+                    </select>
+<label for="select2"></label>
+                    <select name="select2" class="select" id="select2">
+                    </select>
+                    <select name="select3" class="select" id="select3">
+                    </select>
+                    </div>
+                    <div class="row" style="text-align:center">
+                  <input name="" type="button" class="searchButton" />
+                  </div>
+                  </div>
+              </div>
+        	 </div> <!-- END List Wrap -->
+         </div>
+         
+         <ul class="searchResults">
+         <?php foreach($product_type->result_array() as $rows): ?>
+            <h2 class="heading">Product Type > <?= $rows['name'] ?></h2>
+            <li><!--<img src="images/sample-product.jpg" width="180" height="133" />
+              <table border="0" cellspacing="0" cellpadding="5">
+                <tr>
+                  <th>Item Code</th>
+                  <th>Size</th>
+                  <th>Color</th>
+                  <th>MRP</th>
+                  <th>National Cut</th>
+                  <th>City Cut</th>
+                </tr>
+                <tr>
+                  <td>FGY7</td>
+                  <td>M</td>
+                  <td>Black</td>
+                  <td>1000</td>
+                  <td>xxxxx</td>
+                  <td>xxxxx</td>
+                </tr>
+                <tr>
+                  <td>DFTG</td>
+                  <td>L</td>
+                  <td>White</td>
+                  <td>1000</td>
+                  <td>xxxxx</td>
+                  <td>xxxxx</td>
+                </tr>
+              </table>-->
+            </li>
+        <?php endforeach; ?>
+         	
+           <!-- <li><img src="images/sample-product.jpg" width="180" height="133" />
+              <table border="0" cellspacing="0" cellpadding="5">
+                <tr>
+                  <th>Item Code</th>
+                  <th>Size</th>
+                  <th>Color</th>
+                  <th>MRP</th>
+                  <th>National Cut</th>
+                  <th>City Cut</th>
+                </tr>
+                <tr>
+                  <td>FGY7</td>
+                  <td>M</td>
+                  <td>Black</td>
+                  <td>1000</td>
+                  <td>xxxxx</td>
+                  <td>xxxxx</td>
+                </tr>
+                <tr>
+                  <td>DFTG</td>
+                  <td>L</td>
+                  <td>White</td>
+                  <td>1000</td>
+                  <td>xxxxx</td>
+                  <td>xxxxx</td>
+                </tr>
+              </table>
+            </li>-->
+         </ul>
+         
             </div>
             <div id="tab2" class="tab_content">
                <div id="example-one">

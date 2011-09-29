@@ -165,9 +165,33 @@ class Products extends Controller  {
 		$this->load->view('products/size_color',$content);
 	}
 	
+	function succ($str) 
+	{
+       $chars = '0123456789abcdefghijklmnopqrstuvwxyz';
+       $str = strtolower($str);
+
+       $final_char_pos = strlen($str);
+       $final_char = $str[$final_char_pos-1];
+
+       $char_pos = strpos($chars, $final_char);
+
+       if($char_pos!== false) {
+               if($char_pos < 35) {
+                       $final_char = $chars[$char_pos+1];
+                       $str = substr($str, 0, $final_char_pos-1) . $final_char;
+               } else {
+                       $str = succ(substr($str, 0, $final_char_pos-1)) . '0'; // :RECURSION:
+               }
+       }
+
+       return $str;
+	}
+	
 	function add_itemcode()
 	{
 		$data['ptype'] = $_REQUEST['ptype'];
+		$rand=rand(1,10000);
+		$data['item_code'] = $this->succ($rand);
 		$data['design'] = $_REQUEST['design'];
 		$data['color'] = $_REQUEST['color'];
 		$data['size'] = $_REQUEST['size'];
@@ -188,4 +212,6 @@ class Products extends Controller  {
 			echo "Error";
 		}
 	}
+	
+	
 }

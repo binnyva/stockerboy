@@ -68,7 +68,7 @@ try {
     <li><a id="dash" href="<?= site_url('dashboard/dashboard_view') ?>">Dashboard</a></li>
     <li><a id="prod" href="<?= site_url('products/products_view') ?>">Products</a></li>
     <li><a id="stk" href="#">Stock</a></li>
-    <li><a id="sls" href="#">Sales</a></li>
+    <li><a id="sls" href="<?= site_url('sales/sales_view') ?>">Sales</a></li>
     <li><a id="fin" href="#">Finance</a></li>
   </ul>
 </div>
