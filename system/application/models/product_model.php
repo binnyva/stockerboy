@@ -310,6 +310,40 @@ class Product_model extends Model {
 			$this->db->where('item.design_id',$data['design_select']);
 			$this->db->where('item.size',$data['color_select']);
 		}
+		elseif($data['itemcode'] == "Item Code" && $data['product_type'] != "" && $data['design_select'] != "" && $data['color_select'] != "")
+		{
+			$this->db->where('item.product_id',$data['product_type']);
+			$this->db->where('item.design_id',$data['design_select']);
+			$this->db->where('item.size',$data['color_select']);
+		}
+		elseif($data['itemcode'] == "Item Code" && $data['product_type'] == "" && $data['design_select'] != "" && $data['color_select'] != "")
+		{
+			$this->db->where('item.design_id',$data['design_select']);
+			$this->db->where('item.size',$data['color_select']);
+		}
+		elseif($data['itemcode'] == "Item Code" && $data['product_type'] == "" && $data['design_select'] == "" && $data['color_select'] != "")
+		{
+			$this->db->where('item.size',$data['color_select']);
+		}
+		elseif($data['itemcode'] == "Item Code" && $data['product_type'] != "" && $data['design_select'] == "" && $data['color_select'] == "")
+		{
+			$this->db->where('item.product_id',$data['product_type']);
+		}
+		elseif($data['itemcode'] == "Item Code" && $data['product_type'] == "" && $data['design_select'] != "" && $data['color_select'] == "")
+		{
+			$this->db->where('item.design_id',$data['design_select']);
+		}
+		elseif($data['itemcode'] == "Item Code" && $data['product_type'] != "" && $data['design_select'] != "" && $data['color_select'] == "")
+		{
+			$this->db->where('item.product_id',$data['product_type']);
+			$this->db->where('item.design_id',$data['design_select']);
+		}
+		elseif($data['itemcode'] == "Item Code" && $data['product_type'] != "" && $data['design_select'] == "" && $data['color_select'] != "")
+		{
+			$this->db->where('item.product_id',$data['product_type']);
+			$this->db->where('item.size',$data['color_select']);
+		}
+		
 		$this->db->order_by("item.id", "desc");
 		
 		$count = $this->db->get();	
@@ -344,8 +378,42 @@ class Product_model extends Model {
 			$this->db->where('item.code',$data['itemcode']);
 			$this->db->where('item.product_id',$data['product_type']);
 			$this->db->where('item.design_id',$data['design_select']);
-			$this->db->like('item.size',$data['color_select']);
+			$this->db->where('item.size',$data['color_select']);
 		}
+		elseif($data['itemcode'] == "Item Code" && $data['product_type'] != "" && $data['design_select'] != "" && $data['color_select'] != "")
+		{
+			$this->db->where('item.product_id',$data['product_type']);
+			$this->db->where('item.design_id',$data['design_select']);
+			$this->db->where('item.size',$data['color_select']);
+		}
+		elseif($data['itemcode'] == "Item Code" && $data['product_type'] == "" && $data['design_select'] != "" && $data['color_select'] != "")
+		{
+			$this->db->where('item.design_id',$data['design_select']);
+			$this->db->where('item.size',$data['color_select']);
+		}
+		elseif($data['itemcode'] == "Item Code" && $data['product_type'] == "" && $data['design_select'] == "" && $data['color_select'] != "")
+		{
+			$this->db->where('item.size',$data['color_select']);
+		}
+		elseif($data['itemcode'] == "Item Code" && $data['product_type'] != "" && $data['design_select'] == "" && $data['color_select'] == "")
+		{
+			$this->db->where('item.product_id',$data['product_type']);
+		}
+		elseif($data['itemcode'] == "Item Code" && $data['product_type'] == "" && $data['design_select'] != "" && $data['color_select'] == "")
+		{
+			$this->db->where('item.design_id',$data['design_select']);
+		}
+		elseif($data['itemcode'] == "Item Code" && $data['product_type'] != "" && $data['design_select'] != "" && $data['color_select'] == "")
+		{
+			$this->db->where('item.product_id',$data['product_type']);
+			$this->db->where('item.design_id',$data['design_select']);
+		}
+		elseif($data['itemcode'] == "Item Code" && $data['product_type'] != "" && $data['design_select'] == "" && $data['color_select'] != "")
+		{
+			$this->db->where('item.product_id',$data['product_type']);
+			$this->db->where('item.size',$data['color_select']);
+		}
+		
 		$this->db->limit($num,$offset);
 		$this->db->order_by("item.id", "desc");
 		
