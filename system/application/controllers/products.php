@@ -48,7 +48,16 @@ class Products extends Controller  {
 		$data['product_type'] = $this->product_model->get_producttype();
 		$data['design'] = $this->product_model->get_design();
 		
-		$this->load->view('products/products',$data);
+		$this->load->view('products/product_searchhead',$data);
+		$data['products'] = $this->product_model->get_producttype();
+		foreach($data['products']->result_array() as $rows)
+		{
+			$data['pname'] = $rows['name'];
+			$data['pid'] = $rows['id'];
+			$data['item'] = $this->product_model->get_item_details($data['pid']);
+			$this->load->view('products/product_searchresult',$data);
+		}
+		$this->load->view('products/product_add',$data);
 		$this->load->view('layout/footer');
     }
 	
@@ -190,8 +199,8 @@ class Products extends Controller  {
 	function add_itemcode()
 	{
 		$data['ptype'] = $_REQUEST['ptype'];
-		$rand=rand(1,10000);
-		$data['item_code'] = $this->succ($rand);
+		
+		//$data['item_code'] = $this->succ($rand);
 		$data['design'] = $_REQUEST['design'];
 		$data['color'] = $_REQUEST['color'];
 		$data['size'] = $_REQUEST['size'];
@@ -201,6 +210,23 @@ class Products extends Controller  {
 		$data['national'] = $_REQUEST['national'];
 		$data['city'] = $_REQUEST['city'];
 		
+		
+		$item_code= $this->product_model->get_itemcode();
+		
+		if($item_code->num_rows() > 0)
+		{
+			foreach($item_code->result_array() as $rows)
+			{
+				echo $rows['code'];
+				$data['item_code'] = $this->succ($rows['code']);
+			}
+		}
+		else
+		{
+			$data['item_code'] = $this->succ('0000');
+		}
+		
+		echo $data['item_code'];
 		$returnFlag = $this->product_model->additemcode($data);
 		
 		if($returnFlag != '')
@@ -211,6 +237,33 @@ class Products extends Controller  {
 		{
 			echo "Error";
 		}
+	}
+	
+	function get_itemList()
+	{
+		$page_no = $_REQUEST['pageno'];
+		$search_text = $_REQUEST['q'];
+		$linkCount = $this->product_model->get_itemCount($search_text);
+		$data['linkCounter'] = ceil($linkCount/PAGINATION_CONSTANT);
+		$data['currentPage'] = $page_no;
+		$data['search_query'] = $search_text;
+		$data['item'] = $this->product_model->get_itemNames($page_no,$search_text);
+        $this->load->view('products/itemList_view',$data);
+	}
+	
+	function item_search()
+	{
+		$data['page_no'] = $_REQUEST['page_no'];
+		$data['itemcode'] = $_REQUEST['itemcode'];
+		$data['product_type'] = $_REQUEST['product_type'];
+		$data['design_select'] = $_REQUEST['design_select'];
+		$data['color_select'] = $_REQUEST['color_select'];
+
+		$linkCount = $this->product_model->item_searchCount($data);
+		$data['linkCounter'] = ceil($linkCount/PAGINATION_CONSTANT);
+		$data['currentPage'] = $data['page_no'];
+		$data['item'] = $this->product_model->item_searchNames($data);
+        $this->load->view('products/itemSearch_view',$data);
 	}
 	
 	

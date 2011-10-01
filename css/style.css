@@ -310,7 +310,7 @@ ul.tabs li.active, ul.tabs li.active a:hover  { /*--Makes sure that the active t
 	display:block;
 	}
 	
-.searchResults li {
+.searchResults .list-row {
 	width:100%;
 	float:left;
 	display:block;
@@ -318,24 +318,23 @@ ul.tabs li.active, ul.tabs li.active a:hover  { /*--Makes sure that the active t
 	}
 h2.heading {margin: 0 0 10px 0; padding:10px 0; border-bottom:1px solid #ebebeb;border-top:1px solid #ebebeb; font-size:22px; font-family:myfont, arial; color:#5b5b5b; background:#f5f5f5; text-indent:15px; float:left; width:100%;}
 	
-.searchResults li img {
+.searchResults .list-row img {
 	width:180px;
 	float:left;
 	}
 	
-.searchResults li table {
-	width:740px;
+.searchResults .list-row table {
 	float:right;
 	font-family:myfont, arial;
 	}
 		
-.searchResults li table th {
+.searchResults .list-row table th {
 	font-size:16px;
 	color:#707070;
 	text-align:center;
 	}
 			
-.searchResults li table td {
+.searchResults .list-row table td {
 	font-size:14px;
 	color:#909090;
 	text-align:center;
@@ -492,3 +491,48 @@ tr.bg td {background-color:#f7f7f7}
 #footer a {
 	color:#999;
 	}
+	
+	
+ul.pagination {
+    float: right;
+    text-align: right;
+	margin-top:7px;
+}
+
+ul.pagination li {
+    float: left;
+    padding: 0 2px;
+    border: 1px solid #ccc;
+    line-height: 10Spx;
+	margin-left:2px;
+	list-style:none;
+}
+
+ul.pagination li a { text-decoration: none; font-size:10px; }
+
+ul.pagination li.active {
+    border: 1px solid #FF0000;
+}
+
+ul.pagination li.active a {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+ul.pagination li a:hover { text-decoration: none; }
+
+li.pagePrev { margin-right: 2px; background:url(../images/prev.png) no-repeat center; }
+
+li.pageNext { margin-left: 2px; background:url(../images/next.png) no-repeat center;}
+
+li.pagePrev a {
+    padding-left: 15px;
+    background: url(../images/pageArrowLeft.gif) no-repeat 0 50%;
+    text-decoration: none !important;
+}
+
+li.pageNext a {
+    padding-right: 15px;
+    background: url(../images/pageArrowRight.gif) no-repeat 100% 50%;
+    text-decoration: none !important;
+}
