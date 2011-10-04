@@ -23,7 +23,7 @@ class Sales_model extends Model {
 	function get_items()
 	{
 		$this->db->select('*');
-        $this->db->from('item');
+        $this->db->from('Item');
 		$this->db->order_by("code", "asc");
         $result = $this->db->get();
 		return $result;
@@ -41,7 +41,7 @@ class Sales_model extends Model {
 								 );
 								   
 		$this->db->set($salesInfo);
-		$this->db->insert('sale');
+		$this->db->insert('Sale');
 						
 		return ($this->db->affected_rows() > 0) ? $this->db->insert_id(): false ;
 	}
@@ -49,7 +49,7 @@ class Sales_model extends Model {
 	function get_city()
 	{
 		$this->db->select('*');
-        $this->db->from('city');
+        $this->db->from('City');
 		$this->db->order_by("name", "asc");
         $result = $this->db->get();
 		return $result;
@@ -70,7 +70,7 @@ class Sales_model extends Model {
 				$dt = date("Y-m-d", $ts);
 			
 				$this->db->select('*');
-				$this->db->from('sale');
+				$this->db->from('Sale');
 				$this->db->where('city_id',$city_id);
 				$this->db->like('sale_on',$dt);
 				$counts = $this->db->get();
@@ -101,7 +101,7 @@ class Sales_model extends Model {
 		{
 			$dt = date("Y-m-d", $ts);
 			$this->db->select('*');
-			$this->db->from('sale');
+			$this->db->from('Sale');
 			$this->db->where('city_id',$city_id);
 			$this->db->like('sale_on',$dt);
 			
@@ -115,7 +115,7 @@ class Sales_model extends Model {
 	function get_cityCount($value)
 	{
 		$this->db->select('*');
-		$this->db->from('city');
+		$this->db->from('City');
 		$this->db->order_by("name", "asc");
 		
 				
@@ -127,7 +127,7 @@ class Sales_model extends Model {
 	function get_cityNames()
 	{
 		$this->db->select('*');
-		$this->db->from('city');
+		$this->db->from('City');
 		$this->db->order_by("name", "asc");
 
 		$content = $this->db->get();
@@ -138,7 +138,7 @@ class Sales_model extends Model {
 	function get_salesCount($city_id,$value)
 	{
 		$this->db->select('*');
-		$this->db->from('sale');
+		$this->db->from('Sale');
 		$this->db->where('city_id',$city_id);
 		if($value == 1)
 		{
@@ -170,7 +170,7 @@ class Sales_model extends Model {
 				$dt = date("Y-m-d", $ts);
 			
 				$this->db->select('*');
-				$this->db->from('sale');
+				$this->db->from('Sale');
 				$this->db->where('city_id',$city_id);
 				$this->db->like('sale_on',$dt);
 				$counts = $this->db->get();
