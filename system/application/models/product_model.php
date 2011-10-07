@@ -29,7 +29,7 @@ class Product_model extends Model {
 		$ptype  = trim($data['ptype']);
 		
 		$this->db->select('*');
-        $this->db->from('Product');
+        $this->db->from('product');
         $this->db->where('name',$ptype);
         $result = $this->db->get();
 		
@@ -57,7 +57,7 @@ class Product_model extends Model {
 		$img  = trim($data['img']);
 		
 		$this->db->select('*');
-        $this->db->from('Design');
+        $this->db->from('design');
         $this->db->where('name',$dname);
         $result = $this->db->get();
 		
@@ -69,7 +69,7 @@ class Product_model extends Model {
 								 );
 								   
                 $this->db->set($designInfo);
-                $this->db->insert('Design');
+                $this->db->insert('design');
 				                
 				return ($this->db->affected_rows() > 0) ? $this->db->insert_id(): false ;
 	
@@ -87,7 +87,7 @@ class Product_model extends Model {
 	function get_producttype()
 	{
 		$this->db->select('*');
-        $this->db->from('Product');
+        $this->db->from('product');
         $result = $this->db->get();
 		return $result;
 	}
@@ -99,7 +99,7 @@ class Product_model extends Model {
 	function get_design()
 	{
 		$this->db->select('*');
-        $this->db->from('Design');
+        $this->db->from('design');
         $result = $this->db->get();
 		return $result;
 	}
@@ -111,7 +111,7 @@ class Product_model extends Model {
 		$size  = trim($data['size']);
 		
 		$this->db->select('*');
-        $this->db->from('Size');
+        $this->db->from('size');
         $this->db->where('product_id',$ptype);
 		$this->db->where('design_id',$design);
 		$this->db->where('size',$size);
@@ -125,7 +125,7 @@ class Product_model extends Model {
 								 );
 								   
                 $this->db->set($sizeInfo);
-                $this->db->insert('Size');
+                $this->db->insert('size');
 				                
 				return ($this->db->affected_rows() > 0) ? $this->db->insert_id(): false ;
 	
@@ -144,7 +144,7 @@ class Product_model extends Model {
 		$color  = trim($data['color']);
 		
 		$this->db->select('*');
-        $this->db->from('Color');
+        $this->db->from('color');
         $this->db->where('product_id',$ptype);
 		$this->db->where('design_id',$design);
 		$this->db->where('color',$color);
@@ -158,7 +158,7 @@ class Product_model extends Model {
 								 );
 								   
                 $this->db->set($colorInfo);
-                $this->db->insert('Color');
+                $this->db->insert('color');
 				                
 				return ($this->db->affected_rows() > 0) ? $this->db->insert_id(): false ;
 	
@@ -173,7 +173,7 @@ class Product_model extends Model {
 	function get_designs($pid)
 	{
 		$this->db->select('*');
-        $this->db->from('Design');
+        $this->db->from('design');
 		$this->db->where('product_id',$pid);
         $result = $this->db->get();
 		return $result;
@@ -183,7 +183,7 @@ class Product_model extends Model {
 	function get_size($pid,$did)
 	{
 		$this->db->select('*');
-        $this->db->from('Size');
+        $this->db->from('size');
 		$this->db->where('product_id',$pid);
 		$this->db->where('design_id',$did);
         $result = $this->db->get();
@@ -193,7 +193,7 @@ class Product_model extends Model {
 	function get_color($pid,$did)
 	{
 		$this->db->select('*');
-        $this->db->from('Color');
+        $this->db->from('color');
 		$this->db->where('product_id',$pid);
 		$this->db->where('design_id',$did);
         $result = $this->db->get();
@@ -203,7 +203,7 @@ class Product_model extends Model {
 	function get_itemcode()
 	{
 		$this->db->select('*');
-        $this->db->from('Item');
+        $this->db->from('item');
 		$this->db->order_by("id", "desc");
 		$this->db->limit(1,0);
         $result = $this->db->get();
@@ -236,7 +236,7 @@ class Product_model extends Model {
 						 );
 								   
 		$this->db->set($itemInfo);
-		$this->db->insert('Item');
+		$this->db->insert('item');
 						
 		return ($this->db->affected_rows() > 0) ? $this->db->insert_id(): false ;
 	
@@ -244,21 +244,21 @@ class Product_model extends Model {
 	
 	function get_item_details($pid)
 	{
-		$this->db->select('Item.*,Design.img_name');
-		$this->db->from('Item');
-		$this->db->join('Design', 'Item.design_id = Design.id' ,'join');		
-		$this->db->where('Item.product_id',$pid);
+		$this->db->select('item.*,design.img_name');
+		$this->db->from('item');
+		$this->db->join('design', 'item.design_id = design.id' ,'join');		
+		$this->db->where('item.product_id',$pid);
         $result = $this->db->get();
 		return $result;
 	}
 	
 	function get_itemCount($q)
 	{
-		$this->db->select('Item.*,Design.img_name');
-		$this->db->from('Item');
-		$this->db->join('Design', 'Item.design_id = Design.id' ,'join');
-		$this->db->like('Item.code', $q);
-		$this->db->order_by("Item.id", "desc");
+		$this->db->select('item.*,design.img_name');
+		$this->db->from('item');
+		$this->db->join('design', 'item.design_id = design.id' ,'join');
+		$this->db->like('item.code', $q);
+		$this->db->order_by("item.id", "desc");
 		
 		
 		$count = $this->db->get();	
@@ -271,12 +271,12 @@ class Product_model extends Model {
 			$num = PAGINATION_CONSTANT;
 			$offset = PAGINATION_CONSTANT * $page;
 			
-			$this->db->select('Item.*,Design.img_name');
-			$this->db->from('Item');
-			$this->db->join('Design', 'Item.design_id = Design.id' ,'join');
-			$this->db->like('Item.code', $q);
+			$this->db->select('item.*,design.img_name');
+			$this->db->from('item');
+			$this->db->join('design', 'item.design_id = design.id' ,'join');
+			$this->db->like('item.code', $q);
 			$this->db->limit($num,$offset);
-			$this->db->order_by("Item.id", "desc");
+			$this->db->order_by("item.id", "desc");
 
 			$content = $this->db->get();
 			return $content;	
@@ -285,66 +285,66 @@ class Product_model extends Model {
 	
 	function item_searchCount($data)
 	{
-		$this->db->select('Item.*,Design.img_name');
-		$this->db->from('Item');
-		$this->db->join('Design', 'Item.design_id = Design.id' ,'join');
+		$this->db->select('item.*,design.img_name');
+		$this->db->from('item');
+		$this->db->join('design', 'item.design_id = design.id' ,'join');
 		if($data['itemcode'] != "Item Code" && $data['product_type'] == "" && $data['design_select'] == "" && $data['color_select'] == "")
 		{
-			$this->db->where('Item.code',$data['itemcode']);
+			$this->db->where('item.code',$data['itemcode']);
 		}
 		elseif($data['itemcode'] != "Item Code" && $data['product_type'] != "" && $data['design_select'] == "" && $data['color_select'] == "")
 		{
-			$this->db->where('Item.code',$data['itemcode']);
-			$this->db->where('Item.product_id',$data['product_type']);
+			$this->db->where('item.code',$data['itemcode']);
+			$this->db->where('item.product_id',$data['product_type']);
 		}
 		elseif($data['itemcode'] != "Item Code" && $data['product_type'] != "" && $data['design_select'] != "" && $data['color_select'] == "")
 		{
-			$this->db->where('Item.code',$data['itemcode']);
-			$this->db->where('Item.product_id',$data['product_type']);
-			$this->db->where('Item.design_id',$data['design_select']);
+			$this->db->where('item.code',$data['itemcode']);
+			$this->db->where('item.product_id',$data['product_type']);
+			$this->db->where('item.design_id',$data['design_select']);
 		}
 		elseif($data['itemcode'] != "Item Code" && $data['product_type'] != "" && $data['design_select'] != "" && $data['color_select'] != "")
 		{
-			$this->db->where('Item.code',$data['itemcode']);
-			$this->db->where('Item.product_id',$data['product_type']);
-			$this->db->where('Item.design_id',$data['design_select']);
-			$this->db->where('Item.size',$data['color_select']);
+			$this->db->where('item.code',$data['itemcode']);
+			$this->db->where('item.product_id',$data['product_type']);
+			$this->db->where('item.design_id',$data['design_select']);
+			$this->db->where('item.size',$data['color_select']);
 		}
 		elseif($data['itemcode'] == "Item Code" && $data['product_type'] != "" && $data['design_select'] != "" && $data['color_select'] != "")
 		{
-			$this->db->where('Item.product_id',$data['product_type']);
-			$this->db->where('Item.design_id',$data['design_select']);
-			$this->db->where('Item.size',$data['color_select']);
+			$this->db->where('item.product_id',$data['product_type']);
+			$this->db->where('item.design_id',$data['design_select']);
+			$this->db->where('item.size',$data['color_select']);
 		}
 		elseif($data['itemcode'] == "Item Code" && $data['product_type'] == "" && $data['design_select'] != "" && $data['color_select'] != "")
 		{
-			$this->db->where('Item.design_id',$data['design_select']);
-			$this->db->where('Item.size',$data['color_select']);
+			$this->db->where('item.design_id',$data['design_select']);
+			$this->db->where('item.size',$data['color_select']);
 		}
 		elseif($data['itemcode'] == "Item Code" && $data['product_type'] == "" && $data['design_select'] == "" && $data['color_select'] != "")
 		{
-			$this->db->where('Item.size',$data['color_select']);
+			$this->db->where('item.size',$data['color_select']);
 		}
 		elseif($data['itemcode'] == "Item Code" && $data['product_type'] != "" && $data['design_select'] == "" && $data['color_select'] == "")
 		{
-			$this->db->where('Item.product_id',$data['product_type']);
+			$this->db->where('item.product_id',$data['product_type']);
 		}
 		elseif($data['itemcode'] == "Item Code" && $data['product_type'] == "" && $data['design_select'] != "" && $data['color_select'] == "")
 		{
-			$this->db->where('Item.design_id',$data['design_select']);
+			$this->db->where('item.design_id',$data['design_select']);
 		}
 		elseif($data['itemcode'] == "Item Code" && $data['product_type'] != "" && $data['design_select'] != "" && $data['color_select'] == "")
 		{
-			$this->db->where('Item.product_id',$data['product_type']);
-			$this->db->where('Item.design_id',$data['design_select']);
+			$this->db->where('item.product_id',$data['product_type']);
+			$this->db->where('item.design_id',$data['design_select']);
 		}
 		elseif($data['itemcode'] == "Item Code" && $data['product_type'] != "" && $data['design_select'] == "" && $data['color_select'] != "")
 		{
-			$this->db->where('Item.product_id',$data['product_type']);
-			$this->db->where('Item.size',$data['color_select']);
+			$this->db->where('item.product_id',$data['product_type']);
+			$this->db->where('item.size',$data['color_select']);
 		}
 		
-		$this->db->order_by("Item.id", "desc");
+		$this->db->order_by("item.id", "desc");
 		
 		$count = $this->db->get();	
 		return count($count->result());
@@ -355,67 +355,67 @@ class Product_model extends Model {
 		$num = PAGINATION_CONSTANT;
 		$offset = PAGINATION_CONSTANT * $data['page_no'];
 		
-		$this->db->select('Item.*,Design.img_name');
-		$this->db->from('Item');
-		$this->db->join('Design', 'Item.design_id = Design.id' ,'join');
+		$this->db->select('item.*,design.img_name');
+		$this->db->from('item');
+		$this->db->join('design', 'item.design_id = design.id' ,'join');
 		if($data['itemcode'] != "Item Code" && $data['product_type'] == "" && $data['design_select'] == "" && $data['color_select'] == "")
 		{
-			$this->db->where('Item.code',$data['itemcode']);
+			$this->db->where('item.code',$data['itemcode']);
 		}
 		elseif($data['itemcode'] != "Item Code" && $data['product_type'] != "" && $data['design_select'] == "" && $data['color_select'] == "")
 		{
-			$this->db->where('Item.code',$data['itemcode']);
-			$this->db->where('Item.product_id',$data['product_type']);
+			$this->db->where('item.code',$data['itemcode']);
+			$this->db->where('item.product_id',$data['product_type']);
 		}
 		elseif($data['itemcode'] != "Item Code" && $data['product_type'] != "" && $data['design_select'] != "" && $data['color_select'] == "")
 		{
-			$this->db->where('Item.code',$data['itemcode']);
-			$this->db->where('Item.product_id',$data['product_type']);
-			$this->db->where('Item.design_id',$data['design_select']);
+			$this->db->where('item.code',$data['itemcode']);
+			$this->db->where('item.product_id',$data['product_type']);
+			$this->db->where('item.design_id',$data['design_select']);
 		}
 		elseif($data['itemcode'] != "Item Code" && $data['product_type'] != "" && $data['design_select'] != "" && $data['color_select'] != "")
 		{
-			$this->db->where('Item.code',$data['itemcode']);
-			$this->db->where('Item.product_id',$data['product_type']);
-			$this->db->where('Item.design_id',$data['design_select']);
-			$this->db->where('Item.size',$data['color_select']);
+			$this->db->where('item.code',$data['itemcode']);
+			$this->db->where('item.product_id',$data['product_type']);
+			$this->db->where('item.design_id',$data['design_select']);
+			$this->db->where('item.size',$data['color_select']);
 		}
 		elseif($data['itemcode'] == "Item Code" && $data['product_type'] != "" && $data['design_select'] != "" && $data['color_select'] != "")
 		{
-			$this->db->where('Item.product_id',$data['product_type']);
-			$this->db->where('Item.design_id',$data['design_select']);
-			$this->db->where('Item.size',$data['color_select']);
+			$this->db->where('item.product_id',$data['product_type']);
+			$this->db->where('item.design_id',$data['design_select']);
+			$this->db->where('item.size',$data['color_select']);
 		}
 		elseif($data['itemcode'] == "Item Code" && $data['product_type'] == "" && $data['design_select'] != "" && $data['color_select'] != "")
 		{
-			$this->db->where('Item.design_id',$data['design_select']);
-			$this->db->where('Item.size',$data['color_select']);
+			$this->db->where('item.design_id',$data['design_select']);
+			$this->db->where('item.size',$data['color_select']);
 		}
 		elseif($data['itemcode'] == "Item Code" && $data['product_type'] == "" && $data['design_select'] == "" && $data['color_select'] != "")
 		{
-			$this->db->where('Item.size',$data['color_select']);
+			$this->db->where('item.size',$data['color_select']);
 		}
 		elseif($data['itemcode'] == "Item Code" && $data['product_type'] != "" && $data['design_select'] == "" && $data['color_select'] == "")
 		{
-			$this->db->where('Item.product_id',$data['product_type']);
+			$this->db->where('item.product_id',$data['product_type']);
 		}
 		elseif($data['itemcode'] == "Item Code" && $data['product_type'] == "" && $data['design_select'] != "" && $data['color_select'] == "")
 		{
-			$this->db->where('Item.design_id',$data['design_select']);
+			$this->db->where('item.design_id',$data['design_select']);
 		}
 		elseif($data['itemcode'] == "Item Code" && $data['product_type'] != "" && $data['design_select'] != "" && $data['color_select'] == "")
 		{
-			//$this->db->where('Item.product_id',$data['product_type']);
-			$this->db->where('Item.design_id',$data['design_select']);
+			//$this->db->where('item.product_id',$data['product_type']);
+			$this->db->where('item.design_id',$data['design_select']);
 		}
 		elseif($data['itemcode'] == "Item Code" && $data['product_type'] != "" && $data['design_select'] == "" && $data['color_select'] != "")
 		{
-			//$this->db->where('Item.product_id',$data['product_type']);
-			$this->db->where('Item.size',$data['color_select']);
+			//$this->db->where('item.product_id',$data['product_type']);
+			$this->db->where('item.size',$data['color_select']);
 		}
 		
 		$this->db->limit($num,$offset);
-		$this->db->order_by("Item.id", "desc");
+		$this->db->order_by("item.id", "desc");
 		
 		$content = $this->db->get();
 		return $content;

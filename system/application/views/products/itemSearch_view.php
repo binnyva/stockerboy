@@ -30,8 +30,10 @@
    </table>
    </div>
    
+   <!--
    <ul class="pagination">
-            	<?php 
+            	<?php
+				if(!isset($search_query)) $search_query = '';
 				if($linkCounter>1)
 				{
 					if($currentPage != '0') { ?>
@@ -67,8 +69,8 @@
 					for($i=$currentPage+1;$i< $rightcount;$i++)
 					{
 					?>
-						<li ><a href="javascript:get_itemList('<?=$i?>','<?php echo $search_query; ?>')" > <?=$i+1?></a></li> 
-					<?php 
+						<li ><a href="javascript:get_itemList('<?php echo $i?>','<?php echo $search_query; ?>');" ><?php echo $i+1?></a></li> 
+					<?php
 					}
 					
 					if($currentPage+1 != $linkCounter && $linkCounter != 0) { ?>
@@ -80,3 +82,5 @@
 				}
 				?>
 	</ul>
+	-->
+	

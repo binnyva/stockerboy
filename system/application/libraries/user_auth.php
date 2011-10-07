@@ -62,7 +62,7 @@ Class User_auth {
 			//This is a User who have enabled the 'Remember me' Option - so there is a cookie in the users system
 			$email = get_cookie('email');
 			$password_hash = get_cookie('password_hash');
-			$user_details = $this->ci->users_model->db->query("SELECT email,password FROM User 
+			$user_details = $this->ci->users_model->db->query("SELECT email,password FROM user 
 				WHERE email='$email' AND MD5(CONCAT(password,'2o^6uU!'))='$password_hash'")->row();
 			
 			if($user_details) {
@@ -114,52 +114,7 @@ Class User_auth {
 		
 		return in_array($permission_name, $this->ci->session->userdata('permissions'));
 	}
-	/**
-    * Function to register
-    * @author : Rabeesh
-    * @param  : []
-    * @return : type : []
-    *
-    **/
-	function register($data) {
-		$status = $this->ci->users_model->user_registration($data);
-		
-		if($status) {
-			$this->ci->load->model('settings_model');
-			
-			// Returns the email id of the HR person of the given city.
-			$hr_email = $this->ci->settings_model->get_setting_value('hr_email_city_common'); // For diff city, use 'hr_email_city_'.$status['city_id']
-			
-			$new_registration_welcome_message = $this->ci->settings_model->get_setting_value('new_registration_welcome_message'); /// Returns the template of the email that should be sent to new recruites when they register on the site.
-			$new_registration_notification = $this->ci->settings_model->get_setting_value('new_registration_notification'); /// Returns the template of the email that should be sent to the HR when someone registers
-			
-			$replace_these = array('%NAME%', '%CITY_HR_EMAIL%');
-			$with_these = array($status['name'], $hr_email);
-			$new_registration_notification = str_replace($replace_these, $with_these, $new_registration_notification);
-			$new_registration_welcome_message = str_replace($replace_these, $with_these, $new_registration_welcome_message);
-			
-			// Send Email to the newbie
-			$this->ci->email->from($hr_email, "Make A Difference");
-			$this->ci->email->to($status['email']);
-			$this->ci->email->subject('Make A Difference - Registration Details');
-			$this->ci->email->message($new_registration_welcome_message);
-			$this->ci->email->send();
-			//echo $this->ci->email->print_debugger();
-		
-			// Send email to HR
-			$this->ci->email->clear();
-			$this->ci->email->from($status['email'], $status['name']);
-			$this->ci->email->to($hr_email);
-			$this->ci->email->subject('Make A Difference - New Registration');
-			$this->ci->email->message($new_registration_notification);
-			$this->ci->email->send();
-			//echo $this->ci->email->print_debugger();
-			
-			return $status;
-		}
-		return false;
-		
-	}
+	
 	/**
     * Function to forgotten_password
     * @author : Rabeesh

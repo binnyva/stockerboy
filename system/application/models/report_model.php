@@ -20,7 +20,7 @@ class Report_model extends Model {
 	function total_sales_this_week() {
 		$last_sunday = date('Y-m-d', strtotime('last sunday')) . ' 00:00:00';
 		
-		$data = $this->db->query("SELECT SUM(quantity) AS sales FROM Sale WHERE sale_on > '$last_sunday'")->row();
+		$data = $this->db->query("SELECT SUM(quantity) AS sales FROM sale WHERE sale_on > '$last_sunday'")->row();
 		return ($data->sales) ? $data->sales : 0;
 	}
 	
@@ -28,14 +28,15 @@ class Report_model extends Model {
 		$last_sunday = date('Y-m-d', strtotime('last sunday')) . ' 00:00:00';
 		$last_last_sunday = date('Y-m-d', strtotime('-2 weeks sunday')) . ' 00:00:00';
 		
-		$data = $this->db->query("SELECT SUM(quantity) AS sales FROM Sale WHERE sale_on > '$last_last_sunday' AND sale_on < '$last_sunday'")->row();
+		$data = $this->db->query("SELECT SUM(quantity) AS sales FROM sale WHERE sale_on > '$last_last_sunday' AND sale_on < '$last_sunday'")->row();
 		return ($data->sales) ? $data->sales : 0;
 	}
 	
 	function total_revenue_this_week() {
 		$last_sunday = date('Y-m-d', strtotime('last sunday')) . ' 00:00:00';
 		
-		$data = $this->db->query("SELECT SUM(quantity * Item.price) AS sales FROM Sale INNER JOIN Item ON Sale.item_id=Item.id WHERE sale_on > '$last_sunday'")->row();
+		$data = $this->db->query("SELECT SUM(quantity * item.price) AS sales FROM sale 
+			INNER JOIN item ON sale.item_id=item.id WHERE sale_on > '$last_sunday'")->row();
 		
 		return ($data->sales) ? $data->sales : 0;
 	}
@@ -44,14 +45,16 @@ class Report_model extends Model {
 		$last_sunday = date('Y-m-d', strtotime('last sunday')) . ' 00:00:00';
 		$last_last_sunday = date('Y-m-d', strtotime('-2 weeks sunday')) . ' 00:00:00';
 		
-		$data = $this->db->query("SELECT SUM(quantity * Item.price) AS sales FROM Sale INNER JOIN Item ON Sale.item_id=Item.id WHERE sale_on > '$last_last_sunday' AND sale_on < '$last_sunday'")->row();
+		$data = $this->db->query("SELECT SUM(quantity * item.price) AS sales FROM sale 
+			INNER JOIN item ON sale.item_id=item.id WHERE sale_on > '$last_last_sunday' AND sale_on < '$last_sunday'")->row();
 		return ($data->sales) ? $data->sales : 0;
 	}
 	
 	function total_finance_this_week() {
 		$last_sunday = date('Y-m-d', strtotime('last sunday')) . ' 00:00:00';
 		
-		$data = $this->db->query("SELECT SUM(quantity * Item.national_cut) AS sales FROM Sale INNER JOIN Item ON Sale.item_id=Item.id WHERE sale_on > '$last_sunday'")->row();
+		$data = $this->db->query("SELECT SUM(quantity * item.national_cut) AS sales FROM sale 
+			INNER JOIN item ON sale.item_id=item.id WHERE sale_on > '$last_sunday'")->row();
 		
 		return ($data->sales) ? $data->sales : 0;
 	}
@@ -60,14 +63,14 @@ class Report_model extends Model {
 		$last_sunday = date('Y-m-d', strtotime('last sunday')) . ' 00:00:00';
 		$last_last_sunday = date('Y-m-d', strtotime('-2 weeks sunday')) . ' 00:00:00';
 		
-		$data = $this->db->query("SELECT SUM(quantity * Item.national_cut) AS sales FROM Sale INNER JOIN Item ON Sale.item_id=Item.id WHERE sale_on > '$last_last_sunday' AND sale_on < '$last_sunday'")->row();
+		$data = $this->db->query("SELECT SUM(quantity * item.national_cut) AS sales FROM sale 
+			INNER JOIN item ON sale.item_id=item.id WHERE sale_on > '$last_last_sunday' AND sale_on < '$last_sunday'")->row();
 		return ($data->sales) ? $data->sales : 0;
 	}
 	
 	function leaderboard_sale() {
-		$data = $this->db->query("SELECT name, SUM(quantity) AS sale FROM City INNER JOIN Sale ON Sale.city_id=City.id GROUP BY Sale.city_id ORDER BY sale DESC")->result();
+		$data = $this->db->query("SELECT name, SUM(quantity) AS sale FROM city 
+			INNER JOIN sale ON sale.city_id=city.id GROUP BY sale.city_id ORDER BY sale DESC")->result();
 		return $data;
 	}
-
-
 }

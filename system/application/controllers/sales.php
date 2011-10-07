@@ -43,7 +43,6 @@ class Sales extends Controller  {
 		
 		$this->load->view('sales/sales_head');
 		$city = $this->sales_model->get_city();
-		
 		foreach ( $city->result() as $row )
 		{
 			$data['city'] = $row->name;
@@ -91,24 +90,15 @@ class Sales extends Controller  {
 		$this->load->view('layout/footer');
     }
 	
-	function add_sales()
-	{
-		$data['item_code'] = $_REQUEST['item_code'];
-		$data['phone'] = $_REQUEST['phone'];
-		$data['email'] = $_REQUEST['email'];
-		$data['city_id'] = $this->session->userdata('city_id');
-		$data['user_id'] = $this->session->userdata('id');
+	function add_sales() {
+		$codes = $this->input->post('items');
+		$emails = $this->input->post('email');
+		$phones = $this->input->post('phone');
 		
-		$returnFlag = $this->sales_model->addsales($data);
-		
-		if($returnFlag != '')
-		{
-			echo "Sales Added";
-		}
-		else
-		{
-			echo "Error";
-		}
+		$count = $this->make_sale($this->session->userdata('id'), $codes, $emails, $phones);
+
+		$this->session->set_flashdata("success", "Saved details of $count sales");
+		redirect("sales/sales_view");
 	}
 	
 	function leaderboard()
@@ -176,5 +166,6 @@ class Sales extends Controller  {
 		$this->load->view('sales/sales_graph_footer');
 		
 	}
+	
 	
 }
