@@ -23,11 +23,14 @@ class Common extends Controller {
 		$this->load->model('item_model');
 		$this->load->library('sms');
 		
+		$debug = 1;
+				
 		$log = '';
-		print "<pre>";
+		if($debug) print "<pre>";
 		
 		// http://localhost/Projects/MadSB/trunk/index.php/common/sms_response
 		//			?msisdn=919746068565&timestamp=1234567&keyword=MSB&content=MSB+00001+binnyva@gmail.com+9746068565
+		/// keyword=MSB&phonecode=9220092200&location=Delhi&carrier=Hutch&content=MSB 00001 9746068565 binnyva@gmail.com&msisdn=919873734741&timestamp=1318000798081
 		$phone = preg_replace('/^91/', '', $_REQUEST['msisdn']); // Gupshup uses a 91 at the start. Remove that.
 		$time = $_REQUEST['timestamp'];
 		$keyword = strtolower($_REQUEST['keyword']);
@@ -41,7 +44,7 @@ class Common extends Controller {
 			$this->db->query("UPDATE setting SET data='".mysql_real_escape_string($log)."' WHERE name='temp'");
 			return;
 		}
-		print $content;
+		if($debug) print $content;
 		$code = '';
 		$email = '';
 		$phone = '';
@@ -55,7 +58,8 @@ class Common extends Controller {
 			$code = $matches[1];
 		}
 		
-		print "Email: $email\nPhone: $phone\nCode: $code\n";
+		if($debug) print "Email: $email\nPhone: $phone\nCode: $code\n";
+		$log .= "Email: $email\nPhone: $phone\nCode: $code\n";
 		
 		$this->sales_model->make_sale($user->id, array($code), array($email), array($phone));
 		

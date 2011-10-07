@@ -1,9 +1,8 @@
 ]
       }]
    });
-   
-   
 });
+// Looks wierd - but don't remove.
 </script>
 		 
 
@@ -13,10 +12,9 @@
 	$('#stk').removeClass('active');
 	$('#sls').addClass('active');
 	$('#fin').removeClass('active');
-
-
- 
+	
 	$(function() {
+		/*
 		$("#date_from" ).datepicker();
 		$("#date_to" ).datepicker();
 		$("#ldate_from" ).datepicker();
@@ -36,7 +34,59 @@
 			$("#rev_frm" ).datepicker( "option", "showAnim", $( this ).val() );
 			$("#rev_to" ).datepicker( "option", "showAnim", $( this ).val() );
 		});
+		*/
+		
 	});
+	
+	function validate(e) {
+		var codes = document.getElementsByName("items[]");
+		var emails = document.getElementsByName("email[]");
+		var phones = document.getElementsByName("phone[]");
+		
+		var item_count = 0;
+		var error_count=0;
+		for(var i=0; i<codes.length; i++) {
+			if(codes[i].value && codes[i].value != "Item Code") {
+				item_count++;
+				
+				if(emails[i].value == '' || emails[i].value == "E-Mail") {
+					$(emails[i]).css("background-color","#fee9d7");
+					error_count++;
+				} else {
+					$(emails[i]).css("background-color","white");
+				}
+				if(phones[i].value == '' || phones[i].value == "Phone Number") {
+					$(phones[i]).css("background-color","#fee9d7");
+					error_count++;
+				} else {
+					$(phones[i]).css("background-color","white");
+				}
+				
+			}
+		}
+		
+		if(error_count) {
+			alert("Make sure you enter all the data before submitting.");
+			return false;
+		}
+		if(item_count == 0) {
+			alert("Please make sure that you have added atleast one item.");
+			return false;
+		}
+		
+		return true;
+	}
+
+	var item_count = 2;
+	function addMoreItems(count) {
+		var form_html = "<div class='item-"+item_count+"'>" + $("#sales-input").html() + "</div>";
+		var extras = $("#extras").html();
+		item_count++;
+		
+		for(var i=0; i<count; i++) extras += form_html;
+		
+		$("#extras").html(extras);
+	}
 	
 	function add_sales()
 	{
@@ -61,7 +111,7 @@
 		{
 			$.ajax({
 			type: "POST",
-			url: "<?= site_url('sales/add_sales')?>",
+			url: "<?php echo site_url('sales/add_sales')?>",
 			data: "item_code="+item_code+'&phone='+phone+'&email='+email,
 			success: function(msg){
 				$('#msg_div').html(msg);
@@ -154,18 +204,30 @@
             <div id="tab1" class="tab_content">
            	  <h2 class="heading">Enter Sales</h2>
               <div id="msg_div"></div>
-              <div class="padd3">
-				<select name="items" id="items" tabindex="1" class="select">
-                  <option value="">Item Code</option>
-                  <?php foreach($item->result_array() as $row): ?>
-                      <option value="<?= $row['id'] ?>"><?= $row['code'] ?></option>
-                  <?php endforeach; ?>
-                </select>
-<input name="phone" id="phone" type="text" class="text" value="Phone Number" onfocus="if(this.value=='Phone Number'){this.value=''};" onblur="if(this.value==''){this.value='Phone Number'};" />
-<input name="email" id="email" type="text" class="text" value="E-Mail" onfocus="if(this.value=='E-Mail'){this.value=''};" onblur="if(this.value==''){this.value='E-Mail'};" />
-<input name="button" type="button" class="addButton" id="button" value="" onclick="javascript:add_sales();" />
-<!--<a href="#" class="addmoreLink right">Add 10 items at a time?</a>-->
-              </div>
+			  
+			  <form action="<?php echo site_url('sales/add_sales')?>" method="post" id="sales-form" onSubmit="return validate();">
+<div class="padd3"><div id="sales-input" class='item-1'>
+<input name="items[]" type="text" class="text" value="00001" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
+<input name="phone[]" type="text" class="text" value="9746068565" onfocus="if(this.value=='Phone Number'){this.value=''};" onblur="if(this.value==''){this.value='Phone Number'};" />
+<input name="email[]"  type="text" class="text" value="binnyva@gmail.com" onfocus="if(this.value=='E-Mail'){this.value=''};" onblur="if(this.value==''){this.value='E-Mail'};" /><br />
+
+<!--
+<input name="items[]" type="text" class="text" value="Item Code" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
+<input name="phone[]" type="text" class="text" value="Phone Number" onfocus="if(this.value=='Phone Number'){this.value=''};" onblur="if(this.value==''){this.value='Phone Number'};" />
+<input name="email[]"  type="text" class="text" value="E-Mail" onfocus="if(this.value=='E-Mail'){this.value=''};" onblur="if(this.value==''){this.value='E-Mail'};" /><br />
+-->
+</div>
+<div id="extras">
+</div>
+</div>
+
+<a href="javascript:addMoreItems(10);" class="addmoreLink right">Add 10 more fields...</a><br />
+
+<input name="button" type="submit" class="addButton" id="button" value="" />
+
+			  </form>
+			  
+			  <?php /*
               <h2 class="heading">Sales Chart</h2>
               <div class="row"><h4 class="left">Sales</h4>
                 <div class="fromTo"><span class="left"> Select a date range:</span><input name="date_from" id="date_from" type="text" class="textSmall" /><span class="left">To:</span><input name="date_to" id="date_to" type="text" class="textSmall" /><input type="hidden" id="anim" value="clip" /> </div>
@@ -234,6 +296,7 @@
                   </div>
             
       		</div>
+			<?php */ ?>
       </div>
     </div>
   </div>

@@ -73,7 +73,7 @@ class Sales_model extends Model {
 			if($data['item_code'] and $data['item_code'] != 'Item Code') {
 				$success = $this->addsales($data);
 				if($success) {
-					//$this->ci->sms->send('91'.$data['phone'], $sms_template);
+					$this->ci->sms->send('91'.$data['phone'], $sms_template);
 					
 					$this->ci->email->from($from_email, "Make A Difference");
 					$this->ci->email->to($data['email']);
