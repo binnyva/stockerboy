@@ -75,4 +75,12 @@ class Users_model extends Model {
 	function get_users_city($user_id) {
 		return $this->db->select('city_id')->from('user')->where(array('id'=>$user_id))->get()->row()->city_id;
 	}
+	
+	function get_user_type($user_id) {
+		return $this->db->select('type')->from('user')->where(array('id'=>$user_id))->get()->row()->type;
+	}
+	
+	function get_user($user_id) {
+		return $this->db->select('type')->from('user')->where(array('id'=>$user_id))->get()->row();
+	}
 }

@@ -294,23 +294,23 @@
                   </div>
                   <div class="row" style="margin-bottom:10px;">
                   <input name="itemcode" id="itemcode" type="text" class="text" value="Item Code" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
-<label for="select"></label>
- <!--onchange="javascript:design_search(this.value);"-->
-                    <select name="product_type" id="product_type" class="select">
-                    	<option value="">Product Type</option>
+		            <select name="product_type" id="product_type" class="select">
+                    	<option value="">Product</option>
                     	<?php foreach($product_type->result_array() as $row): ?>
-                            <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
+                            <option value="<?php echo $row['id'] ?>"><?php echo $row['name'] ?></option>
                         <?php endforeach; ?>
                     </select>
-<label for="select2"></label>
+
 					<div id="design_search">
                     <select name="design_select" id="design_select" class="select">
                     	<option value="">Design</option>
                     	<?php foreach($design->result_array() as $cdrow): ?>
-                            <option value="<?= $cdrow['id'] ?>"><?= $cdrow['name'] ?></option>
+                            <option value="<?php echo $cdrow['id'] ?>"><?php echo $cdrow['name'] ?></option>
                         <?php endforeach; ?>
                     </select>
                     </div>
+
+					<div id="color_search">
                     <select name="color_select" id="color_select" class="select">
                     	<option value="">Size</option>
                         <option value="XS">XS</option>
@@ -321,9 +321,18 @@
                         <option value="XXL">XXL</option>
                     </select>
                     </div>
+					
+					<div id="sex_search">
+                    <select name="sex_select" id="sex_select" class="select">
+                    	<option value="">Sex</option>
+						<option value="f">F</option>
+						<option value="m">M</option>
+                    </select>
+                    </div>
+					</div>
                     <div class="row" style="text-align:center">
-                  <input name="" type="button" class="searchButton" onClick="javascript:item_search('0')" />
-                  </div>
+					<input name="" type="button" class="searchButton" onClick="javascript:item_search('0')" />
+					</div>
                   </div>
               </div>
         	 </div> <!-- END List Wrap -->

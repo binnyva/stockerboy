@@ -92,10 +92,16 @@ class Product_model extends Model {
 		return $result;
 	}
 	
+	function get_designs_by_product($product_id) {
+		return $this->db->select('*')->from('design')->where('product_id', $product_id)->get()->result();
+	}
+	function get_items_by_design($design_id) {
+		return $this->db->select('*')->from('item')->where('design_id', $design_id)->get()->result();
+	}
+	
 	/*
 		function to get design
 	*/
-	
 	function get_design()
 	{
 		$this->db->select('*');

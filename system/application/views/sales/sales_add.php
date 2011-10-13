@@ -207,15 +207,9 @@
 			  
 			  <form action="<?php echo site_url('sales/add_sales')?>" method="post" id="sales-form" onSubmit="return validate();">
 <div class="padd3"><div id="sales-input" class='item-1'>
-<input name="items[]" type="text" class="text" value="00001" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
-<input name="phone[]" type="text" class="text" value="9746068565" onfocus="if(this.value=='Phone Number'){this.value=''};" onblur="if(this.value==''){this.value='Phone Number'};" />
-<input name="email[]"  type="text" class="text" value="binnyva@gmail.com" onfocus="if(this.value=='E-Mail'){this.value=''};" onblur="if(this.value==''){this.value='E-Mail'};" /><br />
-
-<!--
-<input name="items[]" type="text" class="text" value="Item Code" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
-<input name="phone[]" type="text" class="text" value="Phone Number" onfocus="if(this.value=='Phone Number'){this.value=''};" onblur="if(this.value==''){this.value='Phone Number'};" />
-<input name="email[]"  type="text" class="text" value="E-Mail" onfocus="if(this.value=='E-Mail'){this.value=''};" onblur="if(this.value==''){this.value='E-Mail'};" /><br />
--->
+<input name="items[]" type="text" class="text" value="" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
+<input name="phone[]" type="text" class="text" value="" onfocus="if(this.value=='Phone Number'){this.value=''};" onblur="if(this.value==''){this.value='Phone Number'};" />
+<input name="email[]"  type="text" class="text" value="" onfocus="if(this.value=='E-Mail'){this.value=''};" onblur="if(this.value==''){this.value='E-Mail'};" /><br />
 </div>
 <div id="extras">
 </div>

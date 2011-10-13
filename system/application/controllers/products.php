@@ -38,23 +38,20 @@ class Products extends Controller  {
     function products_view() {	
 		$data['title'] = 'Stocker Boy | Products';
 		
-		/*if($this->input->post('city_id') and $this->user_auth->check_permission('change_city')) {
-			$this->session->set_userdata('city_id', $this->input->post('city_id'));
-		}*/
-		
 		$this->load->view('layout/header',$data);
-		//$upcomming_classes = $this->class_model->get_upcomming_classes();
-		//$this->load->view('dashboard/dashboard', array('upcomming_classes'=>$upcomming_classes));
 		$data['product_type'] = $this->product_model->get_producttype();
 		$data['design'] = $this->product_model->get_design();
 		
 		$this->load->view('products/product_searchhead',$data);
 		$data['products'] = $this->product_model->get_producttype();
-		foreach($data['products']->result_array() as $rows)
-		{
+		foreach($data['products']->result_array() as $rows) {
 			$data['pname'] = $rows['name'];
 			$data['pid'] = $rows['id'];
-			$data['item'] = $this->product_model->get_item_details($data['pid']);
+			$data['designs'] = $this->product_model->get_designs_by_product($data['pid']);
+			
+			foreach($data['designs'] as $d) {
+				$data['all_items'][$d->id] = $this->product_model->get_items_by_design($d->id);
+			}
 			$this->load->view('products/product_searchresult',$data);
 		}
 		$this->load->view('products/product_add',$data);
@@ -84,23 +81,16 @@ class Products extends Controller  {
 	function add_design()
 	{
 		$data['ptype'] = $_REQUEST['ptype'];
-				
 		$data['dname'] = $_REQUEST['dname'];
-				
 		$data['img'] = $_REQUEST['img'];
 		
+		$returnFlag = $this->product_model->adddesign($data);
 		
-		
-			$returnFlag = $this->product_model->adddesign($data);
-			
-			if($returnFlag != '' && $returnFlag != 'designname_already_taken')
-			{
-				echo "Added";
-			}
-			else
-			{
-				echo "Design name already taken";
-			}
+		if($returnFlag != '' && $returnFlag != 'designname_already_taken') {
+			echo "Added";
+		} else {
+			echo "Design name already taken";
+		}
 	}
 	
 	function add_size()

@@ -28,6 +28,7 @@ class Common extends Controller {
 		$log = '';
 		if($debug) print "<pre>";
 		
+		// SMS Number: 9220092200
 		// http://localhost/Projects/MadSB/trunk/index.php/common/sms_response
 		//			?msisdn=919746068565&timestamp=1234567&keyword=MSB&content=MSB+00001+binnyva@gmail.com+9746068565
 		/// keyword=MSB&phonecode=9220092200&location=Delhi&carrier=Hutch&content=MSB 00001 9746068565 binnyva@gmail.com&msisdn=919873734741&timestamp=1318000798081
