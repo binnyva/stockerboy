@@ -95,7 +95,7 @@ class Sales extends Controller  {
 		$emails = $this->input->post('email');
 		$phones = $this->input->post('phone');
 		
-		$count = $this->make_sale($this->session->userdata('id'), $codes, $emails, $phones);
+		$count = $this->sales_model->make_sale($this->session->userdata('id'), $codes, $emails, $phones);
 
 		$this->session->set_flashdata("success", "Saved details of $count sales");
 		redirect("sales/sales_view");
