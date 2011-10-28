@@ -39,7 +39,12 @@ class Stock extends Controller  {
 			
 		$this->load->view('layout/header',$data);
 		
-		$this->load->view('stock/stock');
+		$content['design']= $this->stock_model->get_design();
+		//$content['designs'] = $design->result_array();
+		$content['color']= $this->stock_model->get_color();
+		//$content['colors'] = $color->result_array();
+		
+		$this->load->view('stock/stock',$content);
 		
 		$this->load->view('layout/footer');
 		
@@ -56,6 +61,27 @@ class Stock extends Controller  {
 		$code = $_REQUEST['code'];
 		$city_id = $this->session->userdata('city_id');
 		$data['item'] = $this->stock_model->get_Item($city_id,$code);
+		$data['count'] = $this->stock_model->get_ItemCount($city_id,$code);
+		//print_r($data['item']->result_array());
+		$this->load->view('stock/item_display',$data);
+	}
+	
+	/**
+    * Function to Search stock
+    * @author : Rajesh
+    * @param  : []
+    * @return : type : []
+    **/
+	function search_item1()
+	{
+		$data['design'] = $_REQUEST['design'];
+		$data['size'] = $_REQUEST['size'];
+		$data['sex'] = $_REQUEST['sex'];
+		$data['color'] = $_REQUEST['color'];
+		
+		$data['city_id'] = $this->session->userdata('city_id');
+		$data['item'] = $this->stock_model->get_Item1($data);
+		$data['count'] = $this->stock_model->get_ItemCount1($data);
 		//print_r($data['item']->result_array());
 		$this->load->view('stock/item_display',$data);
 	}
