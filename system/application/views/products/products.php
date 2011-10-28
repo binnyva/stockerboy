@@ -241,10 +241,10 @@
                   </div>
                   <div class="row" style="margin-bottom:10px;">
                   <input name="" type="text" class="text"/>
-<label for="select"></label>
+					<label for="select"></label>
                     <select name="select" class="select" id="select">
                     </select>
-<label for="select2"></label>
+					<label for="select2"></label>
                     <select name="select2" class="select" id="select2">
                     </select>
                     <select name="select3" class="select" id="select3">

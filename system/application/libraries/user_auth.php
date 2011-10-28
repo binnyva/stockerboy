@@ -33,10 +33,10 @@ Class User_auth {
 			$this->ci->session->set_userdata('email', $status['email']);
 			$this->ci->session->set_userdata('name', $status['name']);
 			$this->ci->session->set_userdata('city_id', $status['city_id']);
+			$this->ci->session->set_userdata('type', $status['type']);
+			
 			//$this->ci->session->set_userdata('permissions', $status['permissions']);
 			//$this->ci->session->set_userdata('groups', $status['groups']);
-			
-			$this->ci->session->set_userdata('city_id', $status['city_id']);
 			
 			if($remember_me) {
 				setcookie('email', $status['email'], time() + 3600 * 24 * 30, '/'); // Expires in a month.

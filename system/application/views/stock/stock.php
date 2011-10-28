@@ -10,91 +10,116 @@
 		var code = $('#code').val();
 		$.ajax({
 		type: "POST",
-		url: "<?= site_url('stock/search_item')?>",
+		url: "<?php echo site_url('stock/search_item')?>",
 		data: "code="+code,
 		success: function(msg){
 			$('#extras').html(msg);
 		}
 		});
 	}
+
+var item_count = 2;
+function addMoreItems(count) {
+	var extras = $("#extras").html();
 	
-	function search_item1()
-	{
-		var design = $('#design').val();
-		var size = $('#size').val();
-		var sex = $('#sex').val();
-		var color = $('#color').val();
-		
-		$.ajax({
-		type: "POST",
-		url: "<?= site_url('stock/search_item1')?>",
-		data: "design="+design+'&size='+size+'&sex='+sex+'&color='+color,
-		success: function(msg){
-			$('#extras').html(msg);
-		}
-		});
-	}
+	for(var i=item_count; i<item_count+count; i++) extras += "<div class='item-"+i+"'>" + $("#dispatch-input").html() + "</div>";
 	
-	function show_div()
-	{
-		$('#next_div').show();
-		$('#next').hide();
-		$('#but_div1').hide();
-		$('#button1').show();
-	}
+	item_count += count;
+	
+	$("#extras").html(extras);
+}
 </script>
 
 <div id="wraper">
   <div id="container">
     <div id="products">
-        
+		<ul class="tabs">
+        <li><a href="#tab1">Stock</a></li>
+        <li><a href="#tab2">Dispatch</a></li>
+        <li><a href="#tab3">Receive</a></li>
+    	</ul>
     
         <div class="tab_container">
-            <div id="tab1" class="tab_content">
-           	  <h2 class="heading">Stock</h2>
-              <div id="msg_div"></div>
-              
-      	<div class="padd3"><div id="sales-input" class='item-1'>
-        <input name="code" id="code" type="text" class="text" value="Item Code" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
-        <div id="next_div" style="display:none">
-        	<select id="design" class="text">
-            	<option value="">Design</option>
-                <?php foreach($design->result_array() as $sdrow): ?>
-                  <option value="<?= $sdrow['id'] ?>"><?= $sdrow['name'] ?></option>
-                <?php endforeach; ?>
-            </select>
-            
-            <select id="size" class="text">
-            	<option value="">Size</option>
-                <option value="XS">XS</option>
-                <option value="S">S</option>
-                <option value="M">M</option>
-                <option value="L">L</option>
-                <option value="XL">XL</option>
-                <option value="XXL">XXL</option>
-            </select>
-            
-            <select id="sex" class="text">
-            	<option value="">Sex</option>
-                <option value="m">Male</option>
-                <option value="f">Female</option>
-            </select>
-            
-            <select id="color" class="text">
-            	<option value="">Color</option>
-                <?php foreach($color->result_array() as $crow): ?>
-                  <option value="<?= $crow['color'] ?>"><?= $crow['color'] ?></option>
-              	<?php endforeach; ?>
-            </select>
+        
+		<div id="tab1" class="tab_content">
+			<h2 class="heading">Stock</h2>
+			
+			<?php if($this->session->userdata('type') == 'national') { ?>
+			<div class="padd3"><div id="stock-input">
+			<h3>Add Stock</h3>
+			<form action="<?php echo site_url('stock/add_stock'); ?>" method="post">
+			<input name="item_id" id="item_id" type="text" class="text" value="Item Code" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
+			<input name="amount" type="text" type="text" class="text" value="Amount" onfocus="if(this.value=='Amount'){this.value=''};" onblur="if(this.value==''){this.value='Amount'};" /><br style="clear:both;" />
+			
+			<?php echo form_submit('action','Add Stock', 'class="submit"'); ?>
+			<!--<input name="button" type="button" class="searchButton" id="button" value="" onClick="javascript:search_item();" />-->
+			</form>
+			</div></div>
+			<?php } ?>
+			
+			<h3>Current Stock</h3>
+			
+			<table class="data-table">
+			<tr><th>Item</th><th>Amount</th></tr>
+			<?php foreach($stock_data as $row) { ?>
+			<tr><td><?php echo $row->code ?></td><td><?php echo $row->amount ?></td></tr>
+			<?php } ?>
+			</table>
+		</div>
+		
+		
+		<div id="tab2" class="tab_content">
+			<h2 class="heading">Dispatch</h2>
+				
+			<div class="padd3">
+			<form action="<?php echo site_url('stock/add_dispatch') ?>" class="form-area" method="post">
+			<div id="dispatch-input" class='item-1'>
+			<input name="item_id[]" type="text" class="text" value="Item Code" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
+			<input name="amount[]" type="text" class="text" value="Amount" onfocus="if(this.value=='Amount'){this.value=''};" onblur="if(this.value==''){this.value='Amount'};" /><br />
+			</div>
+			<div id="extras">
+			</div>
+
+			<a href="javascript:addMoreItems(10);" class="addmoreLink">Add 10 more fields...</a><br />
+			
+			<div id="dispatch-details">
+			<label>To City</label><?php echo form_dropdown('to_city_id', $all_cities, '', 'class="select" onchange="javascript:design_drop(this.value);"'); ?><br />
+			<label>Estimated Delivery Date</label><?php echo form_input('estimated_delivery_on','','class="text"'); ?><br />
+			<label>Courier Number</label><?php echo form_input('courier_number','','class="text"'); ?><br />
+			</div>
+			
+			<?php echo form_submit('action','Dispatch', 'class="submit"'); ?>
+			</form>
+			</div>
         </div>
-        <div id="but_div1" style="float:left;"><input name="button" type="button" class="searchButton" id="button" value="" onClick="javascript:search_item();" /></div>
-        <div style="float:left;"><input name="button" type="button" class="searchButton" id="button1" value="" onClick="javascript:search_item1();" style="display:none" /><input name="button" type="button" class="searchButton" id="next" value="Next" onClick="javascript:show_div();" /></div>
-        </div>
-        <div id="extras" style="padding-top:50px;">
-        </div>
-        </div>
+        
+        <div id="tab3" class="tab_content">
+			<h2 class="heading">Receive Dispatch</h2>
+			
+			<div class="padd3">
+			<table class="data-table">
+			<tr><th>Dispatch Number</th><th>From</th><th>Total Items</th><th>Estimated Arrival</th><th>Status</th></tr>
+			<?php foreach($dispatches as $row) { ?>
+			<tr><td><a href="<?php echo site_url('stock/dispatch_details/'.$row->id); ?>"><?php echo $row->id ?></a></td><td><?php echo $all_cities[$row->from_city_id] ?></td><td><?php echo $row->amount ?></td><td><?php echo $row->estimated_delivery_on ?></td>
+				<td><a href="<?php echo site_url('stock/dispatch_received/'.$row->id); ?>">Recieved</a> <a href="<?php echo site_url('stock/dispatch_failed/'.$row->id); ?>">Failed</a></td></tr>
+			<?php } ?>
+			</table>
+			</div>
+			
+			
+			<h2 class="heading">Past Dispatches</h2>
+			
+			<div class="padd3">
+			<table class="data-table">
+			<tr><th>Dispatch Number</th><th>From</th><th>Total Items</th><th>Arrival</th><th>Status</th></tr>
+			<?php foreach($past_dispatches as $row) { ?>
+			<tr><td><a href="<?php echo site_url('stock/dispatch_details/'.$row->id); ?>"><?php echo $row->id ?></a></td><td><?php echo $all_cities[$row->from_city_id] ?></td><td><?php echo $row->amount ?></td><td><?php echo $row->reached_on ?></td>
+				<td><?php echo ucfirst($row->status) ?></td></tr>
+			<?php } ?>
+			</table>
+			</div>
+		</div>
 			 
-      </div>
     </div>
   </div>
 </div>

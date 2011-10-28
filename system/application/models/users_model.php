@@ -38,6 +38,7 @@ class Users_model extends Model {
 			$memberCredentials['email'] = $user->email;
 			$memberCredentials['name'] = $user->name;
 			$memberCredentials['city_id'] = $user->city_id;
+			$memberCredentials['type'] = $user->type;
 			//$memberCredentials['permissions'] = $this->get_user_permissions($user->id);
 			//$memberCredentials['groups'] = $this->get_user_groups($user->id);
 			
