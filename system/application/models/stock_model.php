@@ -10,10 +10,10 @@ class Stock_model extends Model {
 	
 	function add_stock($item_id, $amount, $city_id) {
 		// See if the item is already there in the stock...
-		$stock = $this->db->from('stock')->where(array('city_id'=>$city_id, 'item_id'=>$item_id))->row();
+		$stock = $this->db->where(array('city_id'=>$city_id, 'item_id'=>$item_id))->get('stock')->row();
 		
 		if($stock) { // Stock exists. Update the row instead of inserting.
-			$this->db->where('id',$stock->id)->update('stock', array('city_id'=>$city_id, 'item_id'=>$item_id));
+			$this->db->where('id',$stock->id)->update('stock', array('amount'=>$stock->amount + $amount));
 			$stock_id = $stock->id;
 			
 		} else { // No such stock exists - insert it.
@@ -24,7 +24,6 @@ class Stock_model extends Model {
 			));
 			$stock_id = $this->db->insert_id();
 		}
-		
 		return $stock_id;
 	}
 	
