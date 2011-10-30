@@ -35,7 +35,6 @@ class Dashboard extends Controller  {
 		$data['title'] = 'Stocker Boy | Dashboard';
 		$this->load->model('Report_Model', 'report_model');
 		
-		
 		$this->load->view('layout/header',$data);
 		
 		$data['total_sales'] = $this->report_model->total_sales_this_week();

@@ -15,6 +15,7 @@ class Report_model extends Model {
     function Report_model() {
         parent::Model();
         $this->ci = &get_instance();
+		$this->city_id = $this->ci->session->userdata('city_id');
     }
 	
 	function total_sales_this_week() {
@@ -38,6 +39,7 @@ class Report_model extends Model {
 		$this->load->model('users_model');
 		$user = $this->users_model->get_user($this->session->userdata('id'));
 		$city_info = '';
+		
 		if($user->type == 'city') {
 			$city_info = " AND city_id={$user->city_id}";
 		}

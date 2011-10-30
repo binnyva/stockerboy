@@ -82,6 +82,6 @@ class Users_model extends Model {
 	}
 	
 	function get_user($user_id) {
-		return $this->db->select('type')->from('user')->where(array('id'=>$user_id))->get()->row();
+		return $this->db->from('user')->where(array('id'=>$user_id))->get()->row();
 	}
 }
