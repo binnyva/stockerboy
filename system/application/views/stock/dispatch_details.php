@@ -4,8 +4,8 @@
     <div id="dispatch-details">
 		<ul class="tabs"></ul>
 		<div class="tab_container">
-		<h2 class="heading">Dispatch Details - <?php 
-			if($details->status == 'transit' and 0) echo 'In Transit'; 
+		<h2 class="heading">Dispatch Details - <?php
+			if($details->status == 'transit') echo 'In Transit'; 
 			else if($details->status == 'failed') echo '<span class="error">Failed</span>';
 			else echo '<span class="success">Reached</span>'; 
 		?></h2>
