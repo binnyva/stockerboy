@@ -116,9 +116,11 @@ class Sales extends Controller  {
 		$emails = $this->input->post('email');
 		$phones = $this->input->post('phone');
 		
-		$count = $this->sales_model->make_sale($this->session->userdata('id'), $codes, $emails, $phones);
+		$message = $this->sales_model->make_sale($this->session->userdata('id'), $codes, $emails, $phones);
+		
+		if($message['success']) $this->session->set_flashdata("success", "Saved details of $message[success] sales.");
+		if($message['error']) $this->session->set_flashdata('error', implode('<br />', $message['error']));
 
-		$this->session->set_flashdata("success", "Saved details of $count sales");
 		redirect("sales/sales_view");
 	}
 	

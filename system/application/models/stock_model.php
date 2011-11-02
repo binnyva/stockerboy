@@ -28,6 +28,9 @@ class Stock_model extends Model {
 	}
 	
 	function dispatch($user_id, $city_id, $to_city_id, $estimated_delivery_on, $courier_number, $items) {
+		$this->ci->load->model('item_model');
+		
+		$message = array('success'=>'0', 'error'=>array());
 		$this->db->insert('transit', array(
 			'from_city_id'	=> $city_id,
 			'sent_by_user_id'=>$user_id,
@@ -37,22 +40,41 @@ class Stock_model extends Model {
 			'estimated_delivery_on'=>$estimated_delivery_on
 		));
 		$transit_id = $this->db->insert_id();
+		$send_count = 0;
 
 		// Add items to the 'transit_item' table
-		foreach($items as $item_id => $amount) {
+		foreach($items as $item_code => $amount) {
+			if(!$item_code or $item_code == 'Item Code') continue;
+			
+			$item_id = $this->ci->item_model->get_id_by_code($item_code);
+		
+			if(!$item_id) {
+				$message['error'][] = "Invalid item code '$item_code'.";
+				continue;
+			}
+			
 			// Update 'stock' table
 			$current_amount = $this->db->where(array('city_id'=>$city_id, 'item_id'=>$item_id))->get('stock')->row(); // First get current number of this item in the starting city.
 			if($current_amount) {
 				$current_amount = $current_amount->amount;
 			
-				if($current_amount - $amount >= 0) { // We have enough stock to make the delivery
+				if($current_amount == 0) { // No stock at all.
+					$message['error'][] = "No stock for '$item_code'. Not adding it to dispatch.";
+					$this->db->delete('stock', array('city_id'=>$city_id, 'item_id'=>$item_id));
+					continue;
+					
+				} elseif($current_amount - $amount >= 0) { // We have enough stock to make the delivery
 					$current_amount = $current_amount - $amount;
+					
 				} else { // If not, empty the stock and transfer it.
+					$message['error'][] = "Don't have $amount items of '$item_code'. Current stock is just $current_amount. Sending entire stock.";
 					$amount = $current_amount;
 					$current_amount = 0;
 				}
+				
 				// Update the stock count.
-				$this->db->update('stock', array('amount'=>$current_amount), array('city_id'=>$city_id, 'item_id'=>$item_id));
+				if($current_amount == 0) $this->db->delete('stock', array('city_id'=>$city_id, 'item_id'=>$item_id));
+				else $this->db->update('stock', array('amount'=>$current_amount), array('city_id'=>$city_id, 'item_id'=>$item_id));
 				
 				// Now, put the items in the 'tansit_item' table...
 				$this->db->insert('transit_item', array(
@@ -60,14 +82,21 @@ class Stock_model extends Model {
 					'item_id'		=> $item_id,
 					'amount'		=> $amount
 				));
+				$send_count++;
+			} else {
+				$message['error'][] = "No stock for '$item_code'. Not adding it to dispatch";
 			}
 		}
+		if($send_count) $message['success'] = $send_count;
 		
-		return $transit_id;
+		return $message;
 	}
 	
 	function get_all($city_id) {
-		return $this->db->query("SELECT stock.id, item.code, stock.amount FROM stock INNER JOIN item ON stock.item_id=item.id WHERE stock.city_id=$city_id")->result();
+		return $this->db->query("SELECT stock.id, item.code, item.color, item.size, item.sex, item.price, design.name, design.img_name, stock.amount 
+			FROM stock INNER JOIN item ON stock.item_id=item.id 
+			INNER JOIN design ON item.design_id = design.id
+			WHERE stock.city_id=$city_id")->result();
 	}
 	
 	function get_all_transits($city_id, $status='') {
@@ -85,14 +114,28 @@ class Stock_model extends Model {
 	}
 	
 	function get_transit_items($transit_id) {
-		return $this->db->query("SELECT item.code, transit_item.amount FROM transit_item INNER JOIN item ON transit_item.item_id=item.id WHERE transit_item.transit_id=$transit_id")->result();
+		return $this->db->query("SELECT item.code, item.id, transit_item.amount FROM transit_item INNER JOIN item ON transit_item.item_id=item.id WHERE transit_item.transit_id=$transit_id")->result();
 	}
 	
 	function set_received($transit_id) {
 		$this->db->where('id', $transit_id)->update('transit', array('status'=>'received', 'reached_on'=>date('Y-m-d H:i:s'), 'recived_by_user_id'=>$this->user_id));
+		$transit = $this->get_transit($transit_id);
+		$items = $this->get_transit_items($transit_id);
+		
+		// Update the stock of the receiving side.
+		foreach($items as $item) {
+			$this->add_stock($item->id, $item->amount, $transit->to_city_id);
+		}
 	}
 	
 	function set_failed($transit_id) {
 		$this->db->where('id', $transit_id)->update('transit', array('status'=>'failed', 'recived_by_user_id'=>$this->user_id));
+		$transit = $this->get_transit($transit_id);
+		$items = $this->get_transit_items($transit_id);
+		
+		// If the delivery failed, stuff goes back to the sending city.
+		foreach($items as $item) {
+			$this->add_stock($item->id, $item->amount, $transit->from_city_id);
+		}
 	}
 }

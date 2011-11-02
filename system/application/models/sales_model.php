@@ -29,23 +29,28 @@ class Sales_model extends Model {
 		return $result;
 	}
 	
-	function addsales($data)
-	{
-		$salesInfo = array( 'item_id'  => $data['item_code'],
-							'sold_by_user_id'  => $data['user_id'],
-							'city_id'  => $data['city_id'],
-							'approved'  => '1',
-							'quantity'	=> 1,
-							'sale_on'	=> date('Y-m-d H:i:s'),
-							'approved_by_user_id'  => $data['user_id'],
-							'email'  => $data['email'],
-							'phone_number'  => $data['phone']
-						);
-								   
-		$this->db->set($salesInfo);
-		$this->db->insert('sale');
-						
-		return ($this->db->affected_rows() > 0) ? $this->db->insert_id(): false ;
+	function addsales($data) {
+		// First see if the item is there in the stock of this city
+		$stock = $this->db->where(array('item_id'=>$data['item_code'], 'city_id'=>$data['city_id']))->get('stock')->row();
+		
+		if($stock and $stock->amount) { // We have that item in stock.
+			$this->db->where('id', $stock->id)->update('stock', array('amount'=>($stock->amount - 1)));
+	
+			$this->db->insert('sale', array( 'item_id'  => $data['item_code'],
+				'sold_by_user_id'  => $data['user_id'],
+				'city_id'  => $data['city_id'],
+				'approved'  => '1',
+				'quantity'	=> 1,
+				'sale_on'	=> date('Y-m-d H:i:s'),
+				'approved_by_user_id'  => $data['user_id'],
+				'email'  => $data['email'],
+				'phone_number'  => $data['phone']
+			));
+			return $this->db->insert_id();
+		} else {
+			// Item not in stock.
+			return false ;
+		}
 	}
 	
 	/// This will make a sale. Fuction is called from the common/sms_response and sales/add_sales places.
@@ -58,6 +63,7 @@ class Sales_model extends Model {
 		
 		$data['city_id'] = $this->users_model->get_users_city($user_id);
 		$data['user_id'] = $user_id;
+		$message = array('success'=>'0', 'error'=>array());
 		
 		$from_email = $this->ci->settings_model->get_setting_value('email_address');
 		$sms_template = $this->ci->settings_model->get_setting_value('sale_sms_template');
@@ -66,11 +72,16 @@ class Sales_model extends Model {
 		$count = 0;
 		for($i=0; $i<count($codes); $i++) {
 			$item_code = $codes[$i];
-			$data['item_code'] = $this->ci->item_model->get_id_by_code($item_code);
-			$data['phone'] = $this->correct_phone_number($phones[$i]);
-			$data['email'] = $emails[$i];
-			
-			if($data['item_code'] and $data['item_code'] != 'Item Code') {
+			if($item_code and $item_code != 'Item Code') {
+				$data['item_code'] = $this->ci->item_model->get_id_by_code($item_code);
+				if(!$data['item_code']) {
+					$message['error'][] = "Invalid Item code '$item_code'.";
+					continue;
+				}
+				
+				$data['phone'] = $this->correct_phone_number($phones[$i]);
+				$data['email'] = $emails[$i];
+						
 				$success = $this->addsales($data);
 				if($success) {
 					$this->ci->sms->send('91'.$data['phone'], $sms_template);
@@ -82,11 +93,14 @@ class Sales_model extends Model {
 					$this->ci->email->send();
 					
 					$count++;
+				} else {
+					$message['error'][] = "Item '$item_code' not in stock.";
 				}
 			}
 		}
+		$message['success'] = "$count";
 		
-		return $count;
+		return $message;
 	}
 	
 	function get_city()

@@ -29,7 +29,15 @@
 				<tr><td><?php echo $row->code ?></td><td><?php echo $row->amount ?></td></tr>
 				<?php } ?>
 			</table>
+			<br /><br />
+			
+			<?php if($details->status == 'transit') { ?>
+			<a href="<?php echo site_url('stock/dispatch_received/'.$details->id); ?>">Recieved Shipment</a><br />
+			<a href="<?php echo site_url('stock/dispatch_failed/'.$details->id); ?>">Shipment Failed</a>
+			<?php } ?>
 		</div>
+		
+		
 		</div>
     </div>
   </div>

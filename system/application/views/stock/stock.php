@@ -48,7 +48,7 @@ function addMoreItems(count) {
 			<div class="padd3"><div id="stock-input">
 			<h3>Add Stock</h3>
 			<form action="<?php echo site_url('stock/add_stock'); ?>" method="post">
-			<input name="item_id" id="item_id" type="text" class="text" value="Item Code" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
+			<input name="item_code" id="item_code" type="text" class="text" value="Item Code" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
 			<input name="amount" type="text" type="text" class="text" value="Amount" onfocus="if(this.value=='Amount'){this.value=''};" onblur="if(this.value==''){this.value='Amount'};" /><br style="clear:both;" />
 			
 			<?php echo form_submit('action','Add Stock', 'class="submit"'); ?>
@@ -60,9 +60,17 @@ function addMoreItems(count) {
 			<h3>Current Stock</h3>
 			
 			<table class="data-table">
-			<tr><th>Item</th><th>Amount</th></tr>
+			<tr><th>Code</th><th>Photo</th><th>Sex</th><th>Size</th><th>Colour</th><th>Number</th><th>Price</th></tr>
 			<?php foreach($stock_data as $row) { ?>
-			<tr><td><?php echo $row->code ?></td><td><?php echo $row->amount ?></td></tr>
+			<tr>
+				<td><?php echo $row->code ?></td>
+				<td><img src="<?php echo base_url() . 'uploads/images/' . $row->img_name ?>" height="100" alt="<?php echo $row->name ?>"><br /><?php echo $row->name ?></td>
+				<td><?php echo $row->sex ?></td>
+				<td><?php echo $row->size ?></td>
+				<td><?php echo $row->color ?></td>
+				<td><?php echo $row->amount ?></td>
+				<td><?php echo $row->price ?></td>
+			</tr>
 			<?php } ?>
 			</table>
 		</div>
@@ -74,8 +82,8 @@ function addMoreItems(count) {
 			<div class="padd3">
 			<form action="<?php echo site_url('stock/add_dispatch') ?>" class="form-area" method="post">
 			<div id="dispatch-input" class='item-1'>
-			<input name="item_id[]" type="text" class="text" value="Item Code" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
-			<input name="amount[]" type="text" class="text" value="Amount" onfocus="if(this.value=='Amount'){this.value=''};" onblur="if(this.value==''){this.value='Amount'};" /><br />
+			<input name="item_code[]" type="text" class="text" value="Item Code" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
+			<input name="amount[]" type="text" class="text" value="Number" onfocus="if(this.value=='Number'){this.value=''};" onblur="if(this.value==''){this.value='Number'};" /><br />
 			</div>
 			<div id="extras">
 			</div>
@@ -84,7 +92,7 @@ function addMoreItems(count) {
 			
 			<div id="dispatch-details">
 			<label>To City</label><?php echo form_dropdown('to_city_id', $all_cities, '', 'class="select" onchange="javascript:design_drop(this.value);"'); ?><br />
-			<label>Estimated Delivery Date</label><?php echo form_input('estimated_delivery_on','','class="text"'); ?><br />
+			<label>Estimated Delivery Date</label><?php echo form_input('estimated_delivery_on','','class="text"'); ?>Use YYYY-MM-DD format.<br />
 			<label>Courier Number</label><?php echo form_input('courier_number','','class="text"'); ?><br />
 			</div>
 			
@@ -113,7 +121,8 @@ function addMoreItems(count) {
 			<table class="data-table">
 			<tr><th>Dispatch Number</th><th>From</th><th>Total Items</th><th>Arrival</th><th>Status</th></tr>
 			<?php foreach($past_dispatches as $row) { ?>
-			<tr><td><a href="<?php echo site_url('stock/dispatch_details/'.$row->id); ?>"><?php echo $row->id ?></a></td><td><?php echo $all_cities[$row->from_city_id] ?></td><td><?php echo $row->amount ?></td><td><?php echo $row->reached_on ?></td>
+			<tr><td><a href="<?php echo site_url('stock/dispatch_details/'.$row->id); ?>"><?php echo $row->id ?></a></td>
+				<td><?php echo $all_cities[$row->from_city_id] ?></td><td><?php echo $row->amount ?></td><td><?php echo $row->reached_on ?></td>
 				<td><?php echo ucfirst($row->status) ?></td></tr>
 			<?php } ?>
 			</table>

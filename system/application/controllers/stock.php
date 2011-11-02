@@ -50,17 +50,24 @@ class Stock extends Controller  {
 	}
 	
 	function add_stock() {
-		$item_id = $this->input->post('item_id');
+		$item_code = $this->input->post('item_code');
 		$amount = $this->input->post('amount');
 		
-		$this->stock_model->add_stock($item_id, $amount, $this->session->userdata('city_id'));
-		$this->session->set_flashdata('success', "Items Added to stock");
+		$this->load->model('item_model');
+		$item_id = $this->item_model->get_id_by_code($item_code);
+		
+		if(!$item_id) {
+			$this->session->set_flashdata('error', "Item code '$item_code' doesn't exist");
+		} else {
+			$this->stock_model->add_stock($item_id, $amount, $this->session->userdata('city_id'));
+			$this->session->set_flashdata('success', "Items Added to stock");
+		}
 		
 		redirect('stock/stock_view');
 	}
 	
 	function add_dispatch() {
-		$codes = $this->input->post('item_id');
+		$codes = $this->input->post('item_code');
 		$amounts = $this->input->post('amount');
 		
 		$courier_number = $this->input->post('courier_number');
@@ -75,8 +82,14 @@ class Stock extends Controller  {
 			$items[$codes[$i]] = $amounts[$i];
 		}
 		
-		$tansit_id = $this->stock_model->dispatch($user_id, $city_id, $to_city_id, $estimated_delivery_on, $courier_number, $items);
-		if($tansit_id) $this->session->set_flashdata('success', "Items Dispatched");
+		if($to_city_id == $city_id) {
+			$this->session->set_flashdata('error', "You are trying to dispatch the items to yourself. Seriously?!");
+			
+		} else {
+			$message = $this->stock_model->dispatch($user_id, $city_id, $to_city_id, $estimated_delivery_on, $courier_number, $items);
+			if($message['success']) $this->session->set_flashdata('success', "$message[success] items Dispatched");
+			if($message['error']) $this->session->set_flashdata('error', implode('<br />', $message['error']));
+		}
 		
 		redirect('stock/stock_view');
 	}

@@ -49,13 +49,13 @@
 			if(codes[i].value && codes[i].value != "Item Code") {
 				item_count++;
 				
-				if(emails[i].value == '' || emails[i].value == "E-Mail") {
+				if(emails[i].value == '' || emails[i].value == "E-Mail" || !emails[i].value.match(/^[\w\-]+\@[\w\-]+\.[a-zA-Z\.]{2,5}$/)) {
 					$(emails[i]).css("background-color","#fee9d7");
 					error_count++;
 				} else {
 					$(emails[i]).css("background-color","white");
 				}
-				if(phones[i].value == '' || phones[i].value == "Phone Number") {
+				if(phones[i].value == '' || phones[i].value == "Phone Number" || !phones[i].value.match(/[0-9]{7,15}/)) {
 					$(phones[i]).css("background-color","#fee9d7");
 					error_count++;
 				} else {
@@ -66,7 +66,7 @@
 		}
 		
 		if(error_count) {
-			alert("Make sure you enter all the data before submitting.");
+			alert("Make sure you enter all the data correctly before submitting.");
 			return false;
 		}
 		if(item_count == 0) {
@@ -125,7 +125,7 @@
 		//$('#loading-spinner').show();
             $.ajax({
             type: "POST",
-            url: "<?= site_url('sales/leaderboard')?>",
+            url: "<?php echo site_url('sales/leaderboard')?>",
             data: "value="+value,
             success: function(msg){
 				//$('#loading-spinner').hide();
@@ -138,7 +138,7 @@
 	{
 		 $.ajax({
             type: "POST",
-            url: "<?= site_url('sales/leaderboard_wk')?>",
+            url: "<?php echo site_url('sales/leaderboard_wk')?>",
            
             success: function(msg){
 				//$('#loading-spinner').hide();
@@ -152,7 +152,7 @@
 		//$('#loading-spinner').show();
             $.ajax({
             type: "POST",
-            url: "<?= site_url('sales/leaderboard')?>",
+            url: "<?php echo site_url('sales/leaderboard')?>",
             data: "value="+value,
             success: function(msg){
 				//$('#loading-spinner').hide();
@@ -165,7 +165,7 @@
 	{
 		 $.ajax({
             type: "POST",
-            url: "<?= site_url('sales/leaderboard_wk')?>",
+            url: "<?php echo site_url('sales/leaderboard_wk')?>",
            
             success: function(msg){
 				//$('#loading-spinner').hide();
@@ -182,7 +182,7 @@
 		//alert(date_to);
 		$.ajax({
             type: "POST",
-            url: "<?= site_url('sales/plot_sales_graph')?>",
+            url: "<?php echo site_url('sales/plot_sales_graph')?>",
             data: "date_from="+date_from+'&date_to='+date_to,
             success: function(msg){
 				//$('#loading-spinner').hide();
@@ -207,9 +207,9 @@
 			  
 			  <form action="<?php echo site_url('sales/add_sales')?>" method="post" id="sales-form" onSubmit="return validate();">
 <div class="padd3"><div id="sales-input" class='item-1'>
-<input name="items[]" type="text" class="text" value="" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
-<input name="phone[]" type="text" class="text" value="" onfocus="if(this.value=='Phone Number'){this.value=''};" onblur="if(this.value==''){this.value='Phone Number'};" />
-<input name="email[]"  type="text" class="text" value="" onfocus="if(this.value=='E-Mail'){this.value=''};" onblur="if(this.value==''){this.value='E-Mail'};" /><br />
+<input name="items[]" type="text" class="text" value="Item Code" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
+<input name="phone[]" type="text" class="text" value="Phone Number" onfocus="if(this.value=='Phone Number'){this.value=''};" onblur="if(this.value==''){this.value='Phone Number'};" />
+<input name="email[]"  type="text" class="text" value="Email" onfocus="if(this.value=='EMail'){this.value=''};" onblur="if(this.value==''){this.value='EMail'};" /><br />
 </div>
 <div id="extras">
 </div>
