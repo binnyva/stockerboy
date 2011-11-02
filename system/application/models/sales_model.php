@@ -231,4 +231,64 @@ class Sales_model extends Model {
 		}
 		return $phone;
 	}
+	
+	function get_revenue($city_id)
+	{
+		$this->db->select('*');
+		$this->db->from('revenue');
+		$this->db->where('city_id',$city_id);
+		$this->db->where('paid','0');
+
+		$content = $this->db->get();
+		return $content;	
+	}
+	
+	function get_revByid($id)
+	{
+		$this->db->select('revenue.*,city.name');
+		$this->db->from('revenue');
+		$this->db->join('city' ,'revenue.city_id = city.id');
+		$this->db->where('revenue.id',$id);
+
+		$content = $this->db->get();
+		return $content;
+	}
+	
+	function add_payment($data)
+	{
+		if($data['amount'] != $data['amt'])
+		{
+			$blnc = $data['amount'] - $data['amt'];
+			$payInfo1 = array(
+				   'amount_to_pay' => $blnc
+				);
+	
+			$this->db->where('id', $data['rid']);
+			$this->db->update('revenue', $payInfo1); 
+			
+			$payInfo = array( 'revenue_id'  => $data['rid'],
+								'amount_paid'  => $data['amt'],
+								'paid_by_user_id'  => $data['user_id'],
+								'paid_on'  => date('Y-m-d H:i:s')
+									 );
+									   
+					$this->db->set($payInfo);
+					$this->db->insert('payment');
+									
+				return ($this->db->affected_rows() > 0) ? $this->db->insert_id(): false ;
+		}
+		else
+		{
+			
+			$payInfo1 = array(
+					'amount_to_pay' => 0,
+				   'paid' => '1'
+				);
+	
+			$this->db->where('id', $data['rid']);
+			$this->db->update('revenue', $payInfo1); 
+			
+			return ($this->db->affected_rows() > 0) ? true: false ;
+		}
+	}
 }

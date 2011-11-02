@@ -42,6 +42,7 @@ class Crone_model extends Model {
 		$price  = trim($data['price']);
 		
 		$revenueInfo = array( 'amount'  => $price,
+							  'amount_to_pay'  => $price,
 							  'city_id'  => $city_id,
 							  'paid'  => '0',
 							  'added_on'  => date('Y-m-d H:i:s'),

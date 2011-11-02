@@ -292,7 +292,14 @@
       		</div>
 			<?php */ ?>
       </div>
-    </div>
-  </div>
-</div>
-</div>
+<div id="tab2" class="tab_content">
+	<table width="100%" border="0" cellspacing="0" cellpadding="5">
+      <tr>
+        <th>City</th>
+        <th>Amount</th>
+        <th>Amount To Pay</th>
+        <th>Added on</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    

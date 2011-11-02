@@ -87,6 +87,27 @@ class Sales extends Controller  {
 		}
 		
 		$this->load->view('sales/sales_add',$data);
+		
+		foreach ( $city->result() as $row )
+		{
+			$data['city_id'] = $row->id;
+			$data['city'] = $row->name;
+			$data['revenue'] = $this->sales_model->get_revenue($data['city_id']);
+			if($data['revenue']->num_rows() > 0)
+			{
+				foreach ( $data['revenue']->result() as $rrow )
+				{
+					$data['rid'] = $rrow->id;
+					$data['amount'] = $rrow->amount;
+					$data['amount_to_pay'] = $rrow->amount_to_pay;
+					$data['added_on'] = $rrow->added_on;
+					$data['paid'] = $rrow->paid;
+				}
+			
+			$this->load->view('sales/revenue_disp',$data);
+			}
+		}
+		$this->load->view('sales/sales_footer',$data);
 		$this->load->view('layout/footer');
     }
 	
@@ -165,6 +186,38 @@ class Sales extends Controller  {
 		}
 		$this->load->view('sales/sales_graph_footer');
 		
+	}
+	
+	/*
+		payment add
+	*/
+	function payment_add()
+	{
+		$rid = $this->uri->segment(3);
+		$data['title'] = 'Stocker Boy | Sales';
+		$this->load->view('layout/header',$data);
+		$data['rev'] = $this->sales_model->get_revByid($rid);
+		$this->load->view('sales/payment',$data);
+		$this->load->view('layout/footer');
+	}
+	
+	function add_payment()
+	{
+		$data['amount'] = $_POST['amount'];
+		$data['rid'] = $_POST['rid'];
+		$data['amt'] = $_POST['pay_amt'];
+		$data['user_id'] = $this->session->userdata('id');
+		
+		$returnFlag = $this->sales_model->add_payment($data);
+		
+		if($returnFlag)
+		{
+			echo "Payment Success";
+		}
+		else
+		{
+			echo "Error occured";
+		}
 	}
 	
 	
