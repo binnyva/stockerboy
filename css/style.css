@@ -577,6 +577,7 @@ li.pageNext a {
 	float:left;
 	text-align:right;
 	padding-right:5px;
+	padding-top:10px;
 }
 .form-area input, .form-area select, .form-area textarea {
 	float:left;
