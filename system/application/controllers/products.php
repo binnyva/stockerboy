@@ -243,15 +243,13 @@ class Products extends Controller  {
 	
 	function item_search()
 	{
-		$data['page_no'] = $_REQUEST['page_no'];
 		$data['itemcode'] = $_REQUEST['itemcode'];
 		$data['product_type'] = $_REQUEST['product_type'];
 		$data['design_select'] = $_REQUEST['design_select'];
-		$data['color_select'] = $_REQUEST['color_select'];
+		$data['size_select'] = $_REQUEST['size_select'];
+		$data['keyword'] = $_REQUEST['keyword'];
+		
 
-		$linkCount = $this->product_model->item_searchCount($data);
-		$data['linkCounter'] = ceil($linkCount/PAGINATION_CONSTANT);
-		$data['currentPage'] = $data['page_no'];
 		$data['item'] = $this->product_model->item_searchNames($data);
         $this->load->view('products/itemSearch_view',$data);
 	}

@@ -5,7 +5,8 @@
       	<th></th>
         <th>Item Code</th>
         <th>Size</th>
-        <th>Color</th>
+        <th>Sex</th>
+		<th>Color</th>
         <th>MRP</th>
         <th>National Cut</th>
         <th>City Cut</th>
@@ -18,7 +19,8 @@
         	<td><img src="<?php echo base_url()?>uploads/images/<?= $row['img_name'] ?>" width="100" height="100" /></td>
         	<td><?= $row['code'] ?></td>
             <td><?= $row['size'] ?></td>
-            <td><?= $row['color'] ?></td>
+            <td><?= $row['sex'] ?></td>
+			<td><?= $row['color'] ?></td>
             <td><?= $row['price'] ?></td>
             <td><?= $row['national_cut'] ?></td>
             <td><?= $row['city_cut'] ?></td>

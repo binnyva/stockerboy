@@ -258,18 +258,18 @@
 	
 	function item_search(page)
 	{
+		var keyword = $('#keyword').val();
 		var itemcode = $('#itemcode').val();
 		var ptype = $('#product_type').val();
 		var design_select = $('#design_select').val();
-		var color_select = $('#color_select').val();
+		var size_select = $('#size_select').val();
 		$.ajax({
 		type: "POST",
-		url: "<?= site_url('products/item_search')?>",
-		data: "itemcode="+itemcode+"&product_type="+ptype+"&design_select="+design_select+"&color_select="+color_select+"&page_no="+page,
+		url: "<?php echo site_url('products/item_search')?>",
+		data: "keyword="+keyword+"&itemcode="+itemcode+"&product_type="+ptype+"&design_select="+design_select+"&size_select="+size_select+"&page_no="+page,
 		success: function(msg){
 			//$('#loading-spinner').hide();
 			$('#update-div').html(msg);
-			//alert(msg);
 		}
 		});	
 	}
@@ -290,7 +290,7 @@
         		<div>
         		  <div class="padd2">
                   <div class="row" style="margin-bottom:10px;">
-                  <input name="keyword" id="keyword" type="text" class="textfield" style="width:97%" value="Enter Keyword" onfocus="if(this.value=='Enter Keyword'){this.value=''};" onblur="if(this.value==''){this.value='Enter Keyword'};" onKeyUp="javascript:triggerSearch();" autocomplete="off" />
+                  <input name="keyword" id="keyword" type="text" class="textfield" style="width:97%" value="Enter Keyword" onfocus="if(this.value=='Enter Keyword'){this.value=''};" onblur="if(this.value==''){this.value='Enter Keyword'};" />
                   </div>
                   <div class="row" style="margin-bottom:10px;">
                   <input name="itemcode" id="itemcode" type="text" class="text" value="Item Code" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
@@ -301,7 +301,7 @@
                         <?php endforeach; ?>
                     </select>
 
-					<div id="design_search">
+					<div id="design_search_area">
                     <select name="design_select" id="design_select" class="select">
                     	<option value="">Design</option>
                     	<?php foreach($design->result_array() as $cdrow): ?>
@@ -310,8 +310,8 @@
                     </select>
                     </div>
 
-					<div id="color_search">
-                    <select name="color_select" id="color_select" class="select">
+					<div id="size_search_area">
+                    <select name="size_select" id="size_select" class="select">
                     	<option value="">Size</option>
                         <option value="XS">XS</option>
                         <option value="S">S</option>
@@ -322,7 +322,7 @@
                     </select>
                     </div>
 					
-					<div id="sex_search">
+					<div id="sex_search_area">
                     <select name="sex_select" id="sex_select" class="select">
                     	<option value="">Sex</option>
 						<option value="f">F</option>

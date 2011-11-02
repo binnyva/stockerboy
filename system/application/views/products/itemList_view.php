@@ -15,7 +15,7 @@
 	{
 	?>
         <tr>
-        	<td><img src="<?php echo base_url()?>uploads/images/<?= $row['img_name'] ?>" width="100" height="100" /></td>
+        	<td><img src="<?php echo base_url()?>uploads/images/<?php echo $row['img_name'] ?>" width="100" height="100" /></td>
         	<td><?= $row['code'] ?></td>
             <td><?= $row['size'] ?></td>
             <td><?= $row['color'] ?></td>
