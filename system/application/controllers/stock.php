@@ -118,4 +118,11 @@ class Stock extends Controller  {
 		redirect('stock/dispatch_details/'.$transit_id);
 	}
 	
+	
+	function get_stock_by_city()
+	{
+		$cityid = $_REQUEST['cid'];
+		$stock_data = $this->stock_model->get_all($cityid);
+		$this->load->view('stock/stock_by_city',array('stock_data'=>$stock_data));
+	}
 }
