@@ -40,7 +40,7 @@ foreach($rev->result_array() as $row)
         <form action="<?php echo site_url('sales/add_payment')?>" method="post" id="sales-form" onSubmit="return validate();">
            	<div class='item-1'>
             <div style="float:left; width:200px;">City</div>
-            <input name="city"  type="text" class="text" value="<?= $city ?>" /><br />
+            <input name="city"  type="text" class="text" value="<?php echo $city ?>" /><br />
             </div>
             <div class='item-1'>
             <div style="float:left; width:200px;">Amount</div>
