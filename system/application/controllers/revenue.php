@@ -20,7 +20,7 @@ class Revenue extends Controller  {
 	function index()
 	{
 		$user_type = $this->session->userdata('type');
-		if($user_type == 'city') redirect('revenue/show_pending');
+		if($user_type == 'city') redirect('revenue/city_revenue');
 		
 		
 		$pending = $this->revenue_model->get_pending_payments();
