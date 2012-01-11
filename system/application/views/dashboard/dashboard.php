@@ -10,8 +10,7 @@
     <div id="dashboard">
       <ul id="Status">
         <li>
-          <h2>Sales
-          </h2>
+          <h2><a href="<?php echo site_url('sales/report'); ?>">Sales</a></h2>
           <div class="inner-div">
             <h1><?php echo $total_sales ?></h1><span><?php echo $total_sales - $total_sales_last_week ?></span>
             <h3>Last Week: <?php echo $total_sales_last_week ?></h3>

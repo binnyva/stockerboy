@@ -68,6 +68,13 @@ class Revenue_model extends Model {
 		));
 	}
 	
+	/// Returns the latest payment of of the given revenue.
+	function get_latest_payment($revenue_id) {
+		$data = $this->db->from('payment')->where('revenue_id',$revenue_id)->orderby('paid_on DESC')->limit(1,0)->get();
+		if($data) return $data->row();
+		return false;
+	}
+	
 	function get_revenue_info($revenue_id) {
 		$data = $this->db->from('revenue')->where('id',$revenue_id)->get();
 		if($data) return $data->row();

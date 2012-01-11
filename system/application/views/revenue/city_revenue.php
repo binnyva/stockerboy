@@ -13,13 +13,18 @@
 	<h2 class="heading">Pending Amount</h2>
 	
 	<table class="data-table">
-	<tr><th>Total Payment</th><th>Pending Payment</th><th>Added Date</th><th>Action</th></tr>
+	<tr><th>Time Frame</th><th>Total Amount</th><th>Paid Amount</th><th>Pending</th><th>Action</th></tr>
 
 	<?php foreach($pending as $row) { ?>
 	<tr>
+		<td><?php
+			$time_stamp = strtotime($row->paid_on);
+			echo "Week " . date('W', $time_stamp). "<br /><small>" . date('M d', $time_stamp - (7 * 24 * 60 * 60)) . " to " . date('M d', $time_stamp) . "</small>";
+		?></td>
 		<td><?php echo $row->amount ?></td>
+		<td><span class="<?php echo ($row->latest_payment->status == 'received') ? 'good' : 'bad' ?>"><?php echo $row->amount - $row->amount_to_pay ?></span></td>
 		<td><?php echo $row->amount_to_pay ?></td>
-		<td><?php echo date('dS M, Y', strtotime($row->added_on)); ?></td>
+		
 		<td><a href="<?php echo site_url('revenue/make_payment/'.$row->id) ?>">Make Payment</a></td>
 	</tr>
 	<?php } ?>

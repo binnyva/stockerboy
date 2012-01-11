@@ -127,7 +127,7 @@ function stock_by_city(cid)
 			</div>
 			
 			
-			<h2 class="heading">Past Dispatches</h2>
+			<h2 class="heading">Past Dispatches From Others To You</h2>
 			
 			<div class="padd3">
 			<table class="data-table">
@@ -135,6 +135,19 @@ function stock_by_city(cid)
 			<?php foreach($past_dispatches as $row) { ?>
 			<tr><td><a href="<?php echo site_url('stock/dispatch_details/'.$row->id); ?>"><?php echo $row->id ?></a></td>
 				<td><?php echo $all_cities[$row->from_city_id] ?></td><td><?php echo $row->amount ?></td><td><?php echo $row->reached_on ?></td>
+				<td><?php echo ucfirst($row->status) ?></td></tr>
+			<?php } ?>
+			</table>
+			</div>
+			
+			<h2 class="heading">Past Dispatches From You To Others</h2>
+			
+			<div class="padd3">
+			<table class="data-table">
+			<tr><th>Dispatch Number</th><th>To</th><th>Total Items</th><th>Arrival</th><th>Status</th></tr>
+			<?php foreach($past_dispatches_sent as $row) { ?>
+			<tr><td><a href="<?php echo site_url('stock/dispatch_details/'.$row->id); ?>"><?php echo $row->id ?></a></td>
+				<td><?php echo $all_cities[$row->to_city_id] ?></td><td><?php echo $row->amount ?></td><td><?php echo $row->reached_on ?></td>
 				<td><?php echo ucfirst($row->status) ?></td></tr>
 			<?php } ?>
 			</table>

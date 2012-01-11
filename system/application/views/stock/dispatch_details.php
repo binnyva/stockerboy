@@ -31,7 +31,7 @@
 			</table>
 			<br /><br />
 			
-			<?php if($details->status == 'transit') { ?>
+			<?php if($details->status == 'transit' and $details->to_city_id == $current_city_id) { ?>
 			<a href="<?php echo site_url('stock/dispatch_received/'.$details->id); ?>">Recieved Shipment</a><br />
 			<a href="<?php echo site_url('stock/dispatch_failed/'.$details->id); ?>">Shipment Failed</a>
 			<?php } ?>

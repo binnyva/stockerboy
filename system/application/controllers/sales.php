@@ -35,13 +35,17 @@ class Sales extends Controller  {
     **/
     function sales_view() {	
 		$data['title'] = 'Stocker Boy | Sales';
-		
-			
+		$this->load->view('layout/header',$data);
+		$data['item'] = $this->sales_model->get_items();
+		$this->load->view('sales/sales_add',$data);
+		$this->load->view('layout/footer');
+    }
+    
+    function report() {
+		$data['title'] = 'Stocker Boy | Sales Report';
 		$this->load->view('layout/header',$data);
 		
-		$data['item'] = $this->sales_model->get_items();
-		
-		$this->load->view('sales/sales_head');
+		$this->load->view('sales/report_header',$data);
 		$city = $this->sales_model->get_city();
 		foreach ( $city->result() as $row )
 		{
@@ -86,28 +90,7 @@ class Sales extends Controller  {
 			$this->load->view('sales/revenue_chart_revenue_count2',$data);
 		}
 		
-		$this->load->view('sales/sales_add',$data);
-		
-		foreach ( $city->result() as $row )
-		{
-			$data['city_id'] = $row->id;
-			$data['city'] = $row->name;
-			$data['revenue'] = $this->sales_model->get_revenue($data['city_id']);
-			if($data['revenue']->num_rows() > 0)
-			{
-				foreach ( $data['revenue']->result() as $rrow )
-				{
-					$data['rid'] = $rrow->id;
-					$data['amount'] = $rrow->amount;
-					$data['amount_to_pay'] = $rrow->amount_to_pay;
-					$data['added_on'] = $rrow->added_on;
-					$data['paid'] = $rrow->paid;
-				}
-			
-			$this->load->view('sales/revenue_disp',$data);
-			}
-		}
-		$this->load->view('sales/sales_footer',$data);
+		$this->load->view('sales/report', $data);
 		$this->load->view('layout/footer');
     }
 	
@@ -127,22 +110,17 @@ class Sales extends Controller  {
 	function leaderboard()
 	{
 		$value = $_REQUEST['value'];
-		//$linkCount = $this->sales_model->get_cityCount($value);
-		//$data['linkCounter'] = ceil($linkCount/PAGINATION_CONSTANT);
-		//$data['currentPage'] = $page_no;
 		$data['value'] = $value;
 		$this->load->view('sales/leaderboard_head');
 		$data['details'] = $this->sales_model->get_cityNames();
 		$data['slno'] = 1;
-		foreach($data['details']->result_array() as $row):
-			
+		foreach($data['details']->result_array() as $row) {
 			$data['city_id'] = $row['id'];
 			$data['city_name'] = $row['name']; 
 			$data['sales'] = $this->sales_model->get_salesCount($data['city_id'],$value);
 			$this->load->view('sales/leaderboard',$data);
 			$data['slno']++;
-		endforeach;
-        
+		}
 	}
 	
 	function leaderboard_wk()
@@ -163,7 +141,7 @@ class Sales extends Controller  {
 	
 	function plot_sales_graph()
 	{
-		$this->load->view('sales/sales_head');
+		$this->load->view('sales/report_header');
 		$city = $this->sales_model->get_city();
 		
 		foreach ( $city->result() as $row )
@@ -188,38 +166,6 @@ class Sales extends Controller  {
 		}
 		$this->load->view('sales/sales_graph_footer');
 		
-	}
-	
-	/*
-		payment add
-	*/
-	function payment_add()
-	{
-		$rid = $this->uri->segment(3);
-		$data['title'] = 'Stocker Boy | Sales';
-		$this->load->view('layout/header',$data);
-		$data['rev'] = $this->sales_model->get_revByid($rid);
-		$this->load->view('sales/payment',$data);
-		$this->load->view('layout/footer');
-	}
-	
-	function add_payment()
-	{
-		$data['amount'] = $_POST['amount'];
-		$data['rid'] = $_POST['rid'];
-		$data['amt'] = $_POST['pay_amt'];
-		$data['user_id'] = $this->session->userdata('id');
-		
-		$returnFlag = $this->sales_model->add_payment($data);
-		
-		if($returnFlag)
-		{
-			echo "Payment Success";
-		}
-		else
-		{
-			echo "Error occured";
-		}
 	}
 	
 	

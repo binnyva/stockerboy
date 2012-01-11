@@ -36,7 +36,11 @@ class Revenue extends Controller  {
 		
 		$pending = $this->revenue_model->get_city_pending_payments($city_id);
 		$sent_payments = $this->revenue_model->get_city_sent_payments($city_id);
-
+		
+		for($i=0; $i<count($pending); $i++) {
+			$pending[$i]->latest_payment = $this->revenue_model->get_latest_payment($pending[$i]->id);
+		}
+		
 		$this->load->view('layout/header',array('title'=>'Stocker Boy | Revenue | Pending Amount'));
 		$this->load->view('revenue/city_revenue', array('pending'=>$pending, 'sent_payments'=>$sent_payments));
 		$this->load->view('layout/footer');

@@ -109,6 +109,16 @@ class Stock_model extends Model {
 			GROUP BY transit_item.transit_id")->result();
 	}
 	
+	function get_all_transits_from($city_id, $status='') {
+		$transit_status = "";
+		if($status) $transit_status = "AND transit.status='$status'";
+		
+		return $this->db->query("SELECT transit.id, transit.to_city_id, transit.from_city_id, transit.estimated_delivery_on, transit.reached_on, SUM(transit_item.amount) AS amount, transit.status
+			FROM transit INNER JOIN transit_item ON transit_item.transit_id=transit.id 
+			WHERE transit.from_city_id=$city_id $transit_status
+			GROUP BY transit_item.transit_id")->result();
+	}
+	
 	function get_transit($transit_id) {
 		return $this->db->from('transit')->where('id', $transit_id)->get()->row();
 	}

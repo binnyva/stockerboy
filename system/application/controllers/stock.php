@@ -43,9 +43,10 @@ class Stock extends Controller  {
 		
 		$dispatches = $this->stock_model->get_all_transits($this->session->userdata('city_id'), 'transit');
 		$past_dispatches = $this->stock_model->get_all_transits($this->session->userdata('city_id'), 'past');
-			
+		$past_dispatches_sent = $this->stock_model->get_all_transits_from($this->session->userdata('city_id'));
+		
 		$this->load->view('layout/header',$data);
-		$this->load->view('stock/stock', array('all_cities'=>$all_cities, 'stock_data'=>$stock_data, 'dispatches'=>$dispatches, 'past_dispatches'=>$past_dispatches));
+		$this->load->view('stock/stock', array('all_cities'=>$all_cities, 'stock_data'=>$stock_data, 'dispatches'=>$dispatches, 'past_dispatches'=>$past_dispatches, 'past_dispatches_sent'=>$past_dispatches_sent));
 		$this->load->view('layout/footer');
 	}
 	
@@ -102,7 +103,7 @@ class Stock extends Controller  {
 		$all_cities = idNameFormat($this->city_model->get_all());
 		
 		$this->load->view('layout/header',array('title'=> 'Stocker Boy | Disptach Details'));
-		$this->load->view('stock/dispatch_details', array('details'=>$details, 'items'=>$items, 'all_cities'=>$all_cities));
+		$this->load->view('stock/dispatch_details', array('details'=>$details, 'items'=>$items, 'all_cities'=>$all_cities, 'current_city_id'=>$this->session->userdata('city_id')));
 		$this->load->view('layout/footer');
 	}
 	
