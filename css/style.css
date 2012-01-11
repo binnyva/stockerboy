@@ -610,6 +610,12 @@ ul.horizontal li {
 	color:darkgreen;
 	font-weight:bold;
 }
+.good {
+	color:darkgreen;
+}
+.bad {
+	color:red;
+}
 	
 #warning-message,.warning, #success-message,.success,#error-message,.error {
 	padding-left:18px;
