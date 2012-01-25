@@ -639,3 +639,9 @@ ul.horizontal li {
 	background-image:none !important;
 }
 
+#feedbackButton {
+	display:block;
+	position:absolute;
+	left:0;
+	top:40%;
+	}
