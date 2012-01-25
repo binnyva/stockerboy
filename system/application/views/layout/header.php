@@ -55,11 +55,11 @@ try {
   <div id="logo"><a href="<?= site_url('dashboard/dashboard_view') ?>">Stocker Boy</a></div>
   <div id="session">Welcome <?php echo $this->session->userdata('name'); ?> | <a href="<?php echo site_url('auth/logout'); ?>">Logout</a></div>
   <ul id="navigation">
-    <li><a id="dash" href="<?= site_url('dashboard/dashboard_view') ?>">Dashboard</a></li>
-    <li><a id="prod" href="<?= site_url('products/products_view') ?>">Products</a></li>
-    <li><a id="stk" href="<?= site_url('stock/stock_view') ?>">Stock</a></li>
-    <li><a id="sls" href="<?= site_url('sales/sales_view') ?>">Sales</a></li>
-    <li><a id="fin" href="<?= site_url('revenue/') ?>">Finance</a></li>
+    <li><a id="dash" href="<?= site_url('dashboard/dashboard_view') ?>"><img src="<?php echo base_url(); ?>/images/home.png" /></a></li>
+    <li><a id="prod" href="<?= site_url('products/products_view') ?>"><img src="<?php echo base_url(); ?>/images/products.png" /></a></li>
+    <li><a id="stk" href="<?= site_url('stock/stock_view') ?>"><img src="<?php echo base_url(); ?>/images/stock.png" /></a></li>
+    <li><a id="sls" href="<?= site_url('sales/sales_view') ?>"><img src="<?php echo base_url(); ?>/images/sales.png" /></a></li>
+    <li><a id="fin" href="<?= site_url('revenue/') ?>"><img src="<?php echo base_url(); ?>/images/finance.png" /></a></li>
   </ul>
 </div>
 
