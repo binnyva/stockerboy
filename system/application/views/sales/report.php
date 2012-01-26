@@ -1,9 +1,11 @@
+<?php if($user_type == 'national') { ?>
 ]
       }]
    });
 }); // looks wierd - but don't delete.
 </script>
-		 
+<?php } ?>
+
 
 <script type="text/javascript">
 	$('#dash').removeClass('active');
@@ -12,8 +14,6 @@
 	$('#sls').addClass('active');
 	$('#fin').removeClass('active');
 
-
- 
 	$(function() {
 		$("#date_from" ).datepicker();
 		$("#date_to" ).datepicker();
@@ -35,38 +35,6 @@
 			$("#rev_to" ).datepicker( "option", "showAnim", $( this ).val() );
 		});
 	});
-	
-	function add_sales()
-	{
-		var item_code = $('#items').val();
-		var phone = $('#phone').val();
-		var email = $('#email').val();
-		
-		if(item_code == "")
-		{
-				alert("Enter Item Code");
-		}
-		else if(phone == "Phone Number")
-		{
-				alert("Enter Phone Number");
-		}
-		else if(email == "E-Mail")
-		{
-				alert("Enter Email");
-		}
-		
-		else
-		{
-			$.ajax({
-			type: "POST",
-			url: "<?= site_url('sales/add_sales')?>",
-			data: "item_code="+item_code+'&phone='+phone+'&email='+email,
-			success: function(msg){
-				$('#msg_div').html(msg);
-			}
-			});
-		}
-	}
 	
 	function leaderboard(value)
 	{
@@ -149,6 +117,7 @@
       
         <div class="tab_container">
             <div id="tab1" class="tab_content">
+            <?php if($user_type == 'national') { ?>
               <h2 class="heading">Sales Chart</h2>
               <!--
               <div class="row">
@@ -165,6 +134,8 @@
                     <div id="chart" align="center" style="width: 100%; height: auto; float:left; margin: 0 auto;"></div>
                   </div>
               </div>
+              <?php } ?>
+              
               <h2 class="heading">Sales Leaderboard</h2>
               	<div id="leaderboard">
                 <script>
@@ -198,7 +169,12 @@
 				foreach($weekly_sales as $row) {
 					$total += $row['sales'];
 				?>
-				<tr><td><?php echo $row['week'] ?></td><td><a href="<?php echo site_url('sales/sales_report/'.$row['from'].'/'.$row['to']); ?>"><?php echo $row['sales'] ?></a></td></tr>
+				<tr><td><?php echo $row['week'] ?></td><td><a href="<?php 
+					if($user_type == 'national') 
+						echo site_url('sales/sales_report/'.$row['from'].'/'.$row['to']);
+					else
+						echo site_url('sales/sales_report_city/'.$city_id.'/'.$row['from'].'/'.$row['to']);
+					?>"><?php echo $row['sales'] ?></a></td></tr>
 				<?php } ?>
 				<tr><td><strong>Total</strong></td><td><?php echo $total ?></td></tr>
 				</table>
