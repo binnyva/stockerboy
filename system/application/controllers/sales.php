@@ -45,6 +45,10 @@ class Sales extends Controller  {
 		$data['title'] = 'Stocker Boy | Sales Report';
 		$this->load->view('layout/header',$data);
 		
+		$city_id = $this->session->userdata('city_id');
+		$user_type = $this->session->userdata('type');
+		
+		if($user_type == 'national') {
 		$this->load->view('sales/report_header',$data);
 		$city = $this->sales_model->get_city();
 		foreach ( $city->result() as $row )
@@ -89,8 +93,12 @@ class Sales extends Controller  {
 			$data['prev_week_count'] = $this->sales_model->get_sales_prevweek($data['city_id']);
 			$this->load->view('sales/revenue_chart_revenue_count2',$data);
 		}
+		}
+		$data['user_type'] = $user_type;
+		$data['city_id'] = $city_id;
 		
-		$data['weekly_sales'] = $this->sales_model->get_weekly_sales_data();
+		if($user_type == 'national') $city_id = 0;
+		$data['weekly_sales'] = $this->sales_model->get_weekly_sales_data($city_id);
 		
 		$this->load->view('sales/report', $data);
 		$this->load->view('layout/footer');
