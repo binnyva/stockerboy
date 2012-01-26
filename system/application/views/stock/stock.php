@@ -111,6 +111,20 @@ function stock_by_city(cid)
 			<?php echo form_submit('action','Dispatch', 'class="submit"'); ?>
 			</form>
 			</div>
+			
+			
+			<h2 class="heading">Past Dispatches From You To Others</h2>
+			
+			<div class="padd3">
+			<table class="data-table">
+			<tr><th>Dispatch Number</th><th>To</th><th>Total Items</th><th>Arrival</th><th>Status</th></tr>
+			<?php foreach($past_dispatches_sent as $row) { ?>
+			<tr><td><a href="<?php echo site_url('stock/dispatch_details/'.$row->id); ?>"><?php echo $row->id ?></a></td>
+				<td><?php echo $all_cities[$row->to_city_id] ?></td><td><?php echo $row->amount ?></td><td><?php echo $row->reached_on ?></td>
+				<td><?php echo ucfirst($row->status) ?></td></tr>
+			<?php } ?>
+			</table>
+			</div>
         </div>
         
         <div id="tab3" class="tab_content">
@@ -140,18 +154,7 @@ function stock_by_city(cid)
 			</table>
 			</div>
 			
-			<h2 class="heading">Past Dispatches From You To Others</h2>
-			
-			<div class="padd3">
-			<table class="data-table">
-			<tr><th>Dispatch Number</th><th>To</th><th>Total Items</th><th>Arrival</th><th>Status</th></tr>
-			<?php foreach($past_dispatches_sent as $row) { ?>
-			<tr><td><a href="<?php echo site_url('stock/dispatch_details/'.$row->id); ?>"><?php echo $row->id ?></a></td>
-				<td><?php echo $all_cities[$row->to_city_id] ?></td><td><?php echo $row->amount ?></td><td><?php echo $row->reached_on ?></td>
-				<td><?php echo ucfirst($row->status) ?></td></tr>
-			<?php } ?>
-			</table>
-			</div>
+
 		</div>
 			 
     </div>

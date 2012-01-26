@@ -150,15 +150,16 @@
         <div class="tab_container">
             <div id="tab1" class="tab_content">
               <h2 class="heading">Sales Chart</h2>
-              <div class="row"><h4 class="left">Sales</h4>
               <!--
+              <div class="row">
                 <div class="fromTo">
 					<span class="left"> Select a date range:</span><input name="date_from" id="date_from" type="text" class="textSmall" />
 					<span class="left">To:</span><input name="date_to" id="date_to" type="text" class="textSmall" />
 					<a href="javascript:plot_sales_graph();">Make Graph</a><input type="hidden" id="anim" value="clip" />
 				</div>
+			   </div>
                -->
-              </div>
+              
               <div class="graph">
                   <div id="sales_graph">
                     <div id="chart" align="center" style="width: 100%; height: auto; float:left; margin: 0 auto;"></div>
@@ -169,7 +170,6 @@
                 <script>
 					leaderboard('0');
 				</script>
-                </table>
                 </div>
               <div class="sort">
                 <div>
@@ -178,13 +178,36 @@
 					<label><input name="type" type="radio" class="radio" id="checkbox2" onClick="javascript:leaderboard('2');" /> Yesterdy</label>
                     <label><input name="type" type="radio" class="radio" id="checkbox3" onClick="javascript:leaderboard_wk('3');" /> This Week</label>
                 </div>
+                <!--
                 <div><label>
                     <input name="checkbox4" type="checkbox" class="checkbox" id="checkbox4" />
                     Select a date range </label><input name="sale_frm" id="sale_frm" type="text" class="textSmall" /><span class="left">To</span><input name="sale_to" id="sale_to" type="text" class="textSmall" /></div>
+				</div>
+				-->
               </div>
-            </div>
-            <div id="tab2" class="tab_content">
             
+            
+            <div>
+				<h2 class="heading">Sales</h2>
+				<br />
+				<center>
+				<table class="data-table" style="width:400px;">
+				<tr><th>Week</th><th>Sales</th></tr>
+				<?php 
+				$total = 0;
+				foreach($weekly_sales as $row) {
+					$total += $row['sales'];
+				?>
+				<tr><td><?php echo $row['week'] ?></td><td><a href="<?php echo site_url('sales/sales_report/'.$row['from'].'/'.$row['to']); ?>"><?php echo $row['sales'] ?></a></td></tr>
+				<?php } ?>
+				<tr><td><strong>Total</strong></td><td><?php echo $total ?></td></tr>
+				</table>
+				</center>
+            </div>
+            </div>
+           </div>
+           
+            <div id="tab2" class="tab_content">
                   <h2 class="heading">Revenue Chart</h2>
                   <div class="row"><h4 class="left">Sales</h4>
                     <div class="fromTo"><span class="left"> Select a date range:</span><input name="ldate_from" id="ldate_from" type="text" class="textSmall" /><span class="left">To:</span><input name="ldate_to" id="ldate_to" type="text" class="textSmall" /><input type="hidden" id="anim" value="clip" /> </div>
@@ -212,12 +235,14 @@
                         <input name="checkbox3" type="checkbox" class="checkbox" id="checkbox3" onClick="javascript:leaderboard_revenue_wk('3');" />
                         This Week</label>
                     </div>
+                    <!--
                     <div><label>
                         <input name="checkbox4" type="checkbox" class="checkbox" id="checkbox4" />
                         Select a date range </label><input name="rev_frm" id="rev_frm" type="text" class="textSmall" /><span class="left">To</span><input name="rev_to" id="rev_to" type="text" class="textSmall" /></div>
                   </div>
-            
+                  -->
       		</div>
+      		
       </div>
     </div>
   </div>

@@ -37,12 +37,12 @@ class Dashboard extends Controller  {
 		
 		$this->load->view('layout/header',$data);
 		
-		$data['total_sales'] = $this->report_model->total_sales_this_week();
-		$data['total_sales_last_week'] = $this->report_model->total_sales_last_week();
-		$data['total_revenue'] = $this->report_model->total_revenue_this_week();
-		$data['total_revenue_last_week'] = $this->report_model->total_revenue_last_week();
-		$data['total_finance'] = $this->report_model->total_finance_this_week();
-		$data['total_finance_last_week'] = $this->report_model->total_finance_last_week();
+		$data['total_sales'] = $this->report_model->total_sales_this_month();
+		$data['total_sales_last_week'] = $this->report_model->total_sales_last_month();
+		$data['total_revenue'] = $this->report_model->total_revenue_this_month();
+		$data['total_revenue_last_week'] = $this->report_model->total_revenue_last_month();
+		$data['total_finance'] = $this->report_model->total_finance_this_month();
+		$data['total_finance_last_week'] = $this->report_model->total_finance_last_month();
 		$data['leaderboard_sale'] = $this->report_model->leaderboard_sale();
 		
 		$this->load->view('dashboard/dashboard', $data);

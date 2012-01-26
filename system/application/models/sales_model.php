@@ -237,6 +237,48 @@ class Sales_model extends Model {
 		return $no;
 	}
 	
+	function get_weekly_sales_data($city_id=0) {
+		$where = '';
+		if($city_id) $where = 'WHERE city_id='.$city_id;
+		
+		$sales = $this->db->query("SELECT id, sale_on FROM sale $where ORDER BY sale_on")->result();
+				
+		$data = array();
+		$first_day = date('w', strtotime(date('Y').'-01-01'));
+		foreach($sales as $s) {
+			$week = date('W', strtotime($s->sale_on));
+			if(!isset($data[$week])) {
+				$weekday_str = strtotime(date('Y', strtotime($s->sale_on)).'W'.$week.$first_day);
+				$data[$week] = array(
+					'week'	=> date('M j', $weekday_str + (60 * 60 * 24)) . ' - ' . date('M j', $weekday_str + (60 * 60 * 24  * 7)),
+					'sales'	=> 0,
+					'from'	=> date('Y-m-d', $weekday_str + (60 * 60 * 24)),
+					'to'	=> date('Y-m-d', $weekday_str + (60 * 60 * 24  * 7)),
+				);
+			}
+			
+			$data[$week]['sales']++;
+			
+		}
+		
+		return $data;
+	}
+	
+	function get_city_sales_data($from, $to) {
+		return $this->db->query("SELECT COUNT(*) AS sales, sale.city_id, city.name 
+			FROM sale INNER JOIN city ON sale.city_id=city.id 
+			WHERE sale.sale_on BETWEEN '$from 00:00:00' AND '$to 23:59:59'
+			GROUP BY sale.city_id")->result();
+	}
+	
+	
+	function get_city_week_sales_data($city_id, $from, $to) {
+		return $this->db->query("SELECT COUNT(*) AS sales, item.code, item.size, item.sex,item.color, item.price
+			FROM sale INNER JOIN item ON sale.item_id=item.id
+			WHERE sale.sale_on BETWEEN '$from 00:00:00' AND '$to 23:59:59'
+			GROUP BY sale.item_id ORDER BY sales DESC")->result();
+	}
+	
 	/// Changes the phone number format from +91976068565 to 9746068565. Remove the 91 at the starting.
 	function correct_phone_number($phone) {
 		if(strlen($phone) > 10) {

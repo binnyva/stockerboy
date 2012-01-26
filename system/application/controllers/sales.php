@@ -90,7 +90,33 @@ class Sales extends Controller  {
 			$this->load->view('sales/revenue_chart_revenue_count2',$data);
 		}
 		
+		$data['weekly_sales'] = $this->sales_model->get_weekly_sales_data();
+		
 		$this->load->view('sales/report', $data);
+		$this->load->view('layout/footer');
+    }
+    
+    function sales_report($from, $to) {
+		$data['title'] = 'Stocker Boy | Sales Report';
+		$this->load->view('layout/header',$data);
+		
+		$data['from'] = $from;
+		$data['to'] = $to;
+		$data['city_sales'] = $this->sales_model->get_city_sales_data($from, $to);
+		
+		$this->load->view('sales/sales_report', $data);
+		$this->load->view('layout/footer');
+    }
+    
+    function sales_report_city($city_id, $from, $to) {
+		$data['title'] = 'Stocker Boy | Sales Report';
+		$this->load->view('layout/header',$data);
+		
+		$data['from'] = $from;
+		$data['to'] = $to;
+		$data['sales_data'] = $this->sales_model->get_city_week_sales_data($city_id, $from, $to);
+		
+		$this->load->view('sales/sales_report_city', $data);
 		$this->load->view('layout/footer');
     }
 	

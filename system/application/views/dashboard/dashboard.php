@@ -13,7 +13,7 @@
           <h2><a href="<?php echo site_url('sales/report'); ?>">Sales</a></h2>
           <div class="inner-div">
             <h1><?php echo $total_sales ?></h1><span><?php echo $total_sales - $total_sales_last_week ?></span>
-            <h3>Last Week: <?php echo $total_sales_last_week ?></h3>
+            <h3>Last Month: <?php echo $total_sales_last_week ?></h3>
           </div>
         </li>
         <li>
@@ -21,7 +21,7 @@
           </h2>
           <div class="inner-div">
             <h1><?php echo $total_revenue ?></h1><span><?php echo $total_revenue - $total_revenue_last_week ?></span>
-            <h3>Last Week: <?php echo $total_revenue_last_week ?></h3>
+            <h3>Last Month: <?php echo $total_revenue_last_week ?></h3>
           </div>
         </li>
         <li>
@@ -29,7 +29,7 @@
           </h2>
           <div class="inner-div">
             <h1><?php echo $total_finance ?></h1><span><?php echo $total_finance - $total_finance_last_week ?></span>
-            <h3>Last Week: <?php echo $total_finance_last_week ?></h3>
+            <h3>Last Month: <?php echo $total_finance_last_week ?></h3>
           </div>
         </li>
         <div class="heading"><span>Leaderboard</span></div>
