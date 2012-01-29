@@ -10,7 +10,7 @@
 			if(codes[i].value && codes[i].value != "Item Code") {
 				item_count++;
 				
-				if(emails[i].value == '' || emails[i].value == "E-Mail" || !emails[i].value.match(/^[\w\-]+\@[\w\-]+\.[a-zA-Z\.]{2,5}$/)) {
+				if(emails[i].value == '' || emails[i].value == "E-Mail" || !emails[i].value.match(/^[\w\-\.]+\@[\w\-\.]+\.[a-zA-Z\.]{2,5}$/)) {
 					$(emails[i]).css("background-color","#fee9d7");
 					error_count++;
 				} else {
