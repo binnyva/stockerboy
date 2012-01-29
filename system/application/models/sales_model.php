@@ -84,13 +84,14 @@ class Sales_model extends Model {
 						
 				$success = $this->addsales($data);
 				if($success) {
-					$this->ci->sms->send('91'.$data['phone'], $sms_template);
-					
-					$this->ci->email->from($from_email, "Make A Difference");
-					$this->ci->email->to($data['email']);
-					$this->ci->email->subject('Dream Tee Purchase');
-					$this->ci->email->message($email_template);
-					$this->ci->email->send();
+					// Disabled for now. :TODO:
+// 					$this->ci->sms->send('91'.$data['phone'], $sms_template);
+// 					
+// 					$this->ci->email->from($from_email, "Make A Difference");
+// 					$this->ci->email->to($data['email']);
+// 					$this->ci->email->subject('Dream Tee Purchase');
+// 					$this->ci->email->message($email_template);
+// 					$this->ci->email->send();
 					
 					$count++;
 				} else {

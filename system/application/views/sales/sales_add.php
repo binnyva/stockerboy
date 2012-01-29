@@ -79,7 +79,8 @@
 			}
 			});
 		}
-	</script>
+	}
+</script>
 <div id="wraper">
   <div id="container">
     <div id="products">
@@ -105,5 +106,5 @@
 <a href="javascript:addMoreItems(10);" class="addmoreLink right">Add 10 more fields...</a><br />
 
 <input name="button" type="submit" class="addButton" id="button" value="" />
-
+<br />
 			  </form>
