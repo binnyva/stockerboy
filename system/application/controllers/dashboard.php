@@ -37,13 +37,18 @@ class Dashboard extends Controller  {
 		
 		$this->load->view('layout/header',$data);
 		
-		$data['total_sales'] = $this->report_model->total_sales_this_month();
-		$data['total_sales_last_week'] = $this->report_model->total_sales_last_month();
-		$data['total_revenue'] = $this->report_model->total_revenue_this_month();
-		$data['total_revenue_last_week'] = $this->report_model->total_revenue_last_month();
-		$data['total_finance'] = $this->report_model->total_finance_this_month();
-		$data['total_finance_last_week'] = $this->report_model->total_finance_last_month();
-		$data['leaderboard_sale'] = $this->report_model->leaderboard_sale();
+		$city_id = $this->session->userdata('city_id');
+		$user_type = $this->session->userdata('type');
+		
+		if($user_type == 'national') $city_id = 0;
+		
+		$data['total_sales'] = $this->report_model->total_sales_this_month($city_id);
+		$data['total_sales_last_week'] = $this->report_model->total_sales_last_month($city_id);
+		$data['total_revenue'] = $this->report_model->total_revenue_this_month($city_id);
+		$data['total_revenue_last_week'] = $this->report_model->total_revenue_last_month($city_id);
+		$data['total_finance'] = $this->report_model->total_finance_this_month($city_id);
+		$data['total_finance_last_week'] = $this->report_model->total_finance_last_month($city_id);
+		$data['leaderboard_sale'] = $this->report_model->leaderboard_sale($city_id);
 		
 		$this->load->view('dashboard/dashboard', $data);
 		$this->load->view('layout/footer');

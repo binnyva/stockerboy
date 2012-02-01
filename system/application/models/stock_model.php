@@ -124,7 +124,9 @@ class Stock_model extends Model {
 	}
 	
 	function get_transit_items($transit_id) {
-		return $this->db->query("SELECT item.code, item.id, transit_item.amount FROM transit_item INNER JOIN item ON transit_item.item_id=item.id WHERE transit_item.transit_id=$transit_id")->result();
+		return $this->db->query("SELECT item.code, item.id, item.size, item.sex, item.color, design.name, design.img_name, transit_item.amount 
+			FROM transit_item INNER JOIN item ON transit_item.item_id=item.id INNER JOIN design ON design.id=item.design_id
+			WHERE transit_item.transit_id=$transit_id")->result();
 	}
 	
 	function set_received($transit_id) {

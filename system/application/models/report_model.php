@@ -91,69 +91,88 @@ class Report_model extends Model {
 	}
 	
 	/// Month
-	function total_sales_this_month() {
+	function total_sales_this_month($city_id=0) {
 		$last_sunday = date('Y-m-d', strtotime('last month')) . ' 00:00:00';
 		
-		$data = $this->db->query("SELECT SUM(quantity) AS sales FROM sale WHERE sale_on > '$last_sunday'")->row();
+		$where = '';
+		if($city_id) $where = " AND city_id=$city_id";
+		
+		$data = $this->db->query("SELECT SUM(quantity) AS sales FROM sale WHERE sale_on > '$last_sunday' $where")->row();
 		return ($data->sales) ? $data->sales : 0;
 	}
 	
-	function total_sales_last_month() {
+	function total_sales_last_month($city_id=0) {
 		$last_sunday = date('Y-m-d', strtotime('last month')) . ' 00:00:00';
 		$last_last_sunday = date('Y-m-d', strtotime('2 months ago')) . ' 00:00:00';
 		
-		$data = $this->db->query("SELECT SUM(quantity) AS sales FROM sale WHERE sale_on > '$last_last_sunday' AND sale_on < '$last_sunday'")->row();
+		$where = '';
+		if($city_id) $where = " AND city_id=$city_id";
+		
+		$data = $this->db->query("SELECT SUM(quantity) AS sales FROM sale WHERE sale_on > '$last_last_sunday' AND sale_on < '$last_sunday' $where")->row();
 		return ($data->sales) ? $data->sales : 0;
 	}
 	
-	function total_revenue_this_month() {
+	function total_revenue_this_month($city_id=0) {
 		$last_sunday = date('Y-m-d', strtotime('last month')) . ' 00:00:00';
 		
-		$this->load->model('users_model');
-		$user = $this->users_model->get_user($this->session->userdata('id'));
-		$city_info = '';
-		
-		if($user->type == 'city') {
-			$city_info = " AND city_id={$user->city_id}";
+		$where = '';
+		$user_type = 'national';
+		if($city_id) {
+			$where = " AND city_id=$city_id";
+			$user_type = 'city';
 		}
 		
-		$data = $this->db->query("SELECT SUM(quantity * item.{$user->type}_cut) AS sales FROM sale 
-			INNER JOIN item ON sale.item_id=item.id WHERE sale_on > '$last_sunday' $city_info")->row();
+		$data = $this->db->query("SELECT SUM(quantity * item.{$user_type}_cut) AS sales FROM sale 
+			INNER JOIN item ON sale.item_id=item.id WHERE sale_on > '$last_sunday' $where")->row();
 		
 		return ($data->sales) ? $data->sales : 0;
 	}
 	
-	function total_revenue_last_month() {
+	function total_revenue_last_month($city_id=0) {
 		$last_sunday = date('Y-m-d', strtotime('last month')) . ' 00:00:00';
 		$last_last_sunday = date('Y-m-d', strtotime('-2 months ago')) . ' 00:00:00';
 		
-		$this->load->model('users_model');
-		$user = $this->users_model->get_user($this->session->userdata('id'));
-		$city_info = '';
-		if($user->type == 'city') {
-			$city_info = " AND city_id={$user->city_id}";
+		$where = '';
+		$user_type = 'national';
+		if($city_id) {
+			$where = " AND city_id=$city_id";
+			$user_type = 'city';
 		}
 		
-		$data = $this->db->query("SELECT SUM(quantity * item.{$user->type}_cut) AS sales FROM sale 
-			INNER JOIN item ON sale.item_id=item.id WHERE sale_on > '$last_last_sunday' AND sale_on < '$last_sunday' $city_info")->row();
+		$data = $this->db->query("SELECT SUM(quantity * item.{$user_type}_cut) AS sales FROM sale 
+			INNER JOIN item ON sale.item_id=item.id WHERE sale_on > '$last_last_sunday' AND sale_on < '$last_sunday' $where")->row();
 		return ($data->sales) ? $data->sales : 0;
 	}
 	
-	function total_finance_this_month() {
+	function total_finance_this_month($city_id=0) {
 		$last_sunday = date('Y-m-d', strtotime('last month')) . ' 00:00:00';
 		
-		$data = $this->db->query("SELECT SUM(quantity * item.national_cut) AS sales FROM sale 
-			INNER JOIN item ON sale.item_id=item.id WHERE sale_on > '$last_sunday'")->row();
+		$where = '';
+		$user_type = 'national';
+		if($city_id) {
+			$where = " AND city_id=$city_id";
+			$user_type = 'city';
+		}
+		
+		$data = $this->db->query("SELECT SUM(quantity * item.price) AS sales FROM sale 
+			INNER JOIN item ON sale.item_id=item.id WHERE sale_on > '$last_sunday' $where")->row();
 		
 		return ($data->sales) ? $data->sales : 0;
 	}
 	
-	function total_finance_last_month() {
+	function total_finance_last_month($city_id=0) {
 		$last_sunday = date('Y-m-d', strtotime('last month')) . ' 00:00:00';
 		$last_last_sunday = date('Y-m-d', strtotime('2 months ago')) . ' 00:00:00';
 		
-		$data = $this->db->query("SELECT SUM(quantity * item.national_cut) AS sales FROM sale 
-			INNER JOIN item ON sale.item_id=item.id WHERE sale_on > '$last_last_sunday' AND sale_on < '$last_sunday'")->row();
+		$where = '';
+		$user_type = 'national';
+		if($city_id) {
+			$where = " AND city_id=$city_id";
+			$user_type = 'city';
+		}
+		
+		$data = $this->db->query("SELECT SUM(quantity * item.price) AS sales FROM sale 
+			INNER JOIN item ON sale.item_id=item.id WHERE sale_on > '$last_last_sunday' AND sale_on < '$last_sunday' $where")->row();
 		return ($data->sales) ? $data->sales : 0;
 	}
 }

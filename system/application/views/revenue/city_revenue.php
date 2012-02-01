@@ -18,12 +18,12 @@
 	<?php foreach($pending as $row) { ?>
 	<tr>
 		<td><?php
-			$time_stamp = strtotime($row->paid_on);
+			$time_stamp = strtotime($row->added_on);
 			echo "Week " . date('W', $time_stamp). "<br /><small>" . date('M d', $time_stamp - (7 * 24 * 60 * 60)) . " to " . date('M d', $time_stamp) . "</small>";
 		?></td>
 		<td><?php echo $row->amount ?></td>
-		<td><span class="<?php echo ($row->latest_payment and $row->latest_payment->status == 'received') ? 'good' : 'bad' ?>"><?php echo $row->amount - $row->amount_to_pay ?></span></td>
-		<td><?php echo $row->amount_to_pay ?></td>
+		<td><span class="<?php echo ($row->latest_payment and $row->latest_payment->status == 'received') ? 'good' : 'bad' ?>"><?php echo $row->amount - $row->amount_to_pay + $row->unapproved ?></span></td>
+		<td><?php echo $row->amount_to_pay - $row->unapproved ?></td>
 		
 		<td><a href="<?php echo site_url('revenue/make_payment/'.$row->id) ?>">Make Payment</a></td>
 	</tr>

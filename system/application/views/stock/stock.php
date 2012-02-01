@@ -135,7 +135,7 @@ function stock_by_city(cid)
 			<tr><th>Dispatch Number</th><th>From</th><th>Total Items</th><th>Estimated Arrival</th><th>Status</th></tr>
 			<?php foreach($dispatches as $row) { ?>
 			<tr><td><a href="<?php echo site_url('stock/dispatch_details/'.$row->id); ?>"><?php echo $row->id ?></a></td><td><?php echo $all_cities[$row->from_city_id] ?></td><td><?php echo $row->amount ?></td><td><?php echo $row->estimated_delivery_on ?></td>
-				<td><a href="<?php echo site_url('stock/dispatch_received/'.$row->id); ?>">Recieved</a> <a href="<?php echo site_url('stock/dispatch_failed/'.$row->id); ?>">Failed</a></td></tr>
+				<td><a href="<?php echo site_url('stock/dispatch_received/'.$row->id); ?>">Recieved</a> / <a href="<?php echo site_url('stock/dispatch_failed/'.$row->id); ?>">Failed</a></td></tr>
 			<?php } ?>
 			</table>
 			</div>

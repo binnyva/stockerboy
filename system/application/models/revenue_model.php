@@ -47,8 +47,15 @@ class Revenue_model extends Model {
 	
 	function get_city_pending_payments($city_id) {
 		$data = $this->db->from('revenue')->where('paid','0')->where('city_id',$city_id)->get();
-		if($data) return $data->result();
-		return array();
+		if($data) $pending = $data->result();
+		else return array();
+		
+		for($i=0; $i<count($pending); $i++) {
+			$total_unapproved = $this->db->select('SUM(amount_paid)')->from('payment')->where('status', 'transit')->where('revenue_id', $pending[$i]->id)->get();
+			$amount = reset($total_unapproved->row());
+			$pending[$i]->unapproved = $amount;
+		}
+		return $pending;
 	}
 
 	function get_city_sent_payments($city_id) {
