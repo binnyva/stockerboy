@@ -1,8 +1,7 @@
 <script type="text/javascript">
 	function validate(e) {
 		var codes = document.getElementsByName("items[]");
-		var emails = document.getElementsByName("email[]");
-		var phones = document.getElementsByName("phone[]");
+		var no_tshirts = document.getElementsByName("no_tshirts[]");
 		
 		var item_count = 0;
 		var error_count=0;
@@ -10,18 +9,13 @@
 			if(codes[i].value && codes[i].value != "Item Code") {
 				item_count++;
 				
-				if(emails[i].value == '' || emails[i].value == "E-Mail" || !emails[i].value.match(/^[\w\-\.]+\@[\w\-\.]+\.[a-zA-Z\.]{2,5}$/)) {
-					$(emails[i]).css("background-color","#fee9d7");
+				if(no_tshirts[i].value == '' || no_tshirts[i].value == "Number of T-Shirts") {
+					$(no_tshirts[i]).css("background-color","#fee9d7");
 					error_count++;
 				} else {
-					$(emails[i]).css("background-color","white");
+					$(no_tshirts[i]).css("background-color","white");
 				}
-				if(phones[i].value == '' || phones[i].value == "Phone Number" || !phones[i].value.match(/[0-9]{7,15}/)) {
-					$(phones[i]).css("background-color","#fee9d7");
-					error_count++;
-				} else {
-					$(phones[i]).css("background-color","white");
-				}
+				
 				
 			}
 		}
@@ -93,11 +87,10 @@
            	  <h2 class="heading">Enter Sales</h2>
               <div id="msg_div"></div>
 			  
-			  <form action="<?php echo site_url('sales/add_sales')?>" method="post" id="sales-form" onSubmit="return validate();">
+			  <form action="<?php echo site_url('sales/add_sales_new')?>" method="post" id="sales-form" onSubmit="return validate();">
 <div class="padd3"><div id="sales-input" class='item-1'>
 <input name="items[]" type="text" class="text" value="Item Code" onfocus="if(this.value=='Item Code'){this.value=''};" onblur="if(this.value==''){this.value='Item Code'};" />
-<input name="phone[]" type="text" class="text" value="Phone Number" onfocus="if(this.value=='Phone Number'){this.value=''};" onblur="if(this.value==''){this.value='Phone Number'};" />
-<input name="email[]"  type="text" class="text" value="Email" onfocus="if(this.value=='Email'){this.value=''};" onblur="if(this.value==''){this.value='Email'};" /><br />
+<input name="no_tshirts[]" type="text" class="text" value="Number of T-Shirts" onfocus="if(this.value=='Number of T-Shirts'){this.value=''};" onblur="if(this.value==''){this.value='Number of T-Shirts'};" /><br />
 </div>
 <div id="extras">
 </div>

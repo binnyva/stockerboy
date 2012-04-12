@@ -287,4 +287,76 @@ class Sales_model extends Model {
 		}
 		return $phone;
 	}
+	
+	/// This will make a sale. Fuction is called from the common/sms_response and sales/add_sales places.
+	function make_sale_new($user_id, $codes, $no_tshirts) {
+		$this->load->library('sms');
+		$this->load->library('email');
+		$this->load->model('settings_model');
+		$this->load->model('item_model');
+		$this->load->model('users_model');
+		
+		$data['city_id'] = $this->users_model->get_users_city($user_id);
+		$data['user_id'] = $user_id;
+		$message = array('success'=>'0', 'error'=>array());
+		
+		$from_email = $this->ci->settings_model->get_setting_value('email_address');
+		$sms_template = $this->ci->settings_model->get_setting_value('sale_sms_template');
+		$email_template = $this->ci->settings_model->get_setting_value('sale_email_template');
+		
+		$count = 0;
+		for($i=0; $i<count($codes); $i++) {
+			$item_code = $codes[$i];
+			if($item_code and $item_code != 'Item Code') {
+				$data['item_code'] = $this->ci->item_model->get_id_by_code($item_code);
+				if(!$data['item_code']) {
+					$message['error'][] = "Invalid Item code '$item_code'.";
+					continue;
+				}
+				
+				$data['no_tshirts'] = $no_tshirts[$i];
+						
+				$success = $this->addsales_new($data);
+				if($success) {
+					// Disabled for now. :TODO:
+// 					$this->ci->sms->send('91'.$data['phone'], $sms_template);
+// 					
+// 					$this->ci->email->from($from_email, "Make A Difference");
+// 					$this->ci->email->to($data['email']);
+// 					$this->ci->email->subject('Dream Tee Purchase');
+// 					$this->ci->email->message($email_template);
+// 					$this->ci->email->send();
+					
+					$count++;
+				} else {
+					$message['error'][] = "Item '$item_code' not in stock.";
+				}
+			}
+		}
+		$message['success'] = "$count";
+		
+		return $message;
+	}
+	
+	function addsales_new($data) {
+		// First see if the item is there in the stock of this city
+		$stock = $this->db->where(array('item_id'=>$data['item_code'], 'city_id'=>$data['city_id']))->get('stock')->row();
+		
+		if($stock and $stock->amount) { // We have that item in stock.
+			$this->db->where('id', $stock->id)->update('stock', array('amount'=>($stock->amount - 1)));
+	
+			$this->db->insert('sale', array( 'item_id'  => $data['item_code'],
+				'sold_by_user_id'  => $data['user_id'],
+				'city_id'  => $data['city_id'],
+				'approved'  => '1',
+				'quantity'	=> $data['no_tshirts'],
+				'sale_on'	=> date('Y-m-d H:i:s'),
+				'approved_by_user_id'  => $data['user_id']
+			));
+			return $this->db->insert_id();
+		} else {
+			// Item not in stock.
+			return false ;
+		}
+	}
 }

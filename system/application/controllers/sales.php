@@ -37,7 +37,7 @@ class Sales extends Controller  {
 		$data['title'] = 'Stocker Boy | Sales';
 		$this->load->view('layout/header',$data);
 		$data['item'] = $this->sales_model->get_items();
-		$this->load->view('sales/sales_add',$data);
+		$this->load->view('sales/sales_add_new',$data);
 		$this->load->view('layout/footer');
     }
     
@@ -200,6 +200,18 @@ class Sales extends Controller  {
 		}
 		$this->load->view('sales/sales_graph_footer');
 		
+	}
+	
+	function add_sales_new() {
+		$codes = $this->input->post('items');
+		$no_tshirts = $this->input->post('no_tshirts');
+		
+		$message = $this->sales_model->make_sale_new($this->session->userdata('id'), $codes, $no_tshirts);
+		
+		if($message['success']) $this->session->set_flashdata("success", "Saved details of $message[success] sales.");
+		if($message['error']) $this->session->set_flashdata('error', implode('<br />', $message['error']));
+
+		redirect("sales/sales_view");
 	}
 	
 	
