@@ -40,6 +40,14 @@ class Sales extends Controller  {
 		$this->load->view('sales/sales_add_new',$data);
 		$this->load->view('layout/footer');
     }
+	
+	function sales_views() {	
+		$data['title'] = 'Stocker Boy | Sales';
+		$this->load->view('layout/header',$data);
+		$data['item'] = $this->sales_model->get_items();
+		$this->load->view('sales/sales_add',$data);
+		$this->load->view('layout/footer');
+    }
     
     function report() {
 		$data['title'] = 'Stocker Boy | Sales Report';
