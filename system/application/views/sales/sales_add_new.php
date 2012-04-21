@@ -66,7 +66,7 @@
 		{
 			$.ajax({
 			type: "POST",
-			url: "<?php echo site_url('sales/add_sales')?>",
+			url: "<?php echo site_url('sales/add_sales_new')?>",
 			data: "item_code="+item_code+'&phone='+phone+'&email='+email,
 			success: function(msg){
 				$('#msg_div').html(msg);
