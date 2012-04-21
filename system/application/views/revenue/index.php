@@ -1,3 +1,11 @@
+<script type="text/javascript">
+$('#dash').removeClass('active');
+	$('#prod').removeClass('active');
+	$('#stk').removeClass('active');
+	$('#sls').removeClass('active');
+	$('#slss').removeClass('active');
+	$('#fin').addClass('active');
+</script>
 <div id="wraper">
   <div id="container">
 	<div id="products">

@@ -80,6 +80,12 @@
 			});
 		}
 	}
+	$('#dash').removeClass('active');
+	$('#prod').removeClass('active');
+	$('#stk').removeClass('active');
+	$('#sls').removeClass('active');
+	$('#slss').addClass('active');
+	$('#fin').removeClass('active');
 </script>
 <div id="wraper">
   <div id="container">

@@ -74,6 +74,14 @@
 			});
 		}
 	}
+	
+	$('#dash').removeClass('active');
+	$('#prod').removeClass('active');
+	$('#stk').removeClass('active');
+	$('#sls').addClass('active');
+	$('#slss').removeClass('active');
+	$('#fin').removeClass('active');
+	
 </script>
 <div id="wraper">
   <div id="container">
