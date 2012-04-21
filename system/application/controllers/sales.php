@@ -146,7 +146,7 @@ class Sales extends Controller  {
 		if($message['success']) $this->session->set_flashdata("success", "Saved details of $message[success] sales.");
 		if($message['error']) $this->session->set_flashdata('error', implode('<br />', $message['error']));
 
-		redirect("sales/sales_view");
+		redirect("sales/sales_views");
 	}
 	
 	function leaderboard()
