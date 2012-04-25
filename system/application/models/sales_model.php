@@ -342,17 +342,19 @@ class Sales_model extends Model {
 		// First see if the item is there in the stock of this city
 		$stock = $this->db->where(array('item_id'=>$data['item_code'], 'city_id'=>$data['city_id']))->get('stock')->row();
 		
-		if($stock and $stock->amount) { // We have that item in stock.
-			$this->db->where('id', $stock->id)->update('stock', array('amount'=>($stock->amount - 1)));
+		if($stock and $stock->amount >= $data['no_tshirts']) { // We have that item in stock.
+			$this->db->where('id', $stock->id)->update('stock', array('amount'=>($stock->amount - $data['no_tshirts'])));
 	
-			$this->db->insert('sale', array( 'item_id'  => $data['item_code'],
-				'sold_by_user_id'  => $data['user_id'],
-				'city_id'  => $data['city_id'],
-				'approved'  => '1',
-				'quantity'	=> $data['no_tshirts'],
-				'sale_on'	=> date('Y-m-d H:i:s'),
-				'approved_by_user_id'  => $data['user_id']
-			));
+			for($i=0; $i<$data['no_tshirts']; $i++) {
+				$this->db->insert('sale', array( 'item_id'  => $data['item_code'],
+					'sold_by_user_id'  => $data['user_id'],
+					'city_id'	=> $data['city_id'],
+					'approved'  => '1',
+					'quantity'	=> 1,
+					'sale_on'	=> date('Y-m-d H:i:s'),
+					'approved_by_user_id'  => $data['user_id']
+				));
+			}
 			return $this->db->insert_id();
 		} else {
 			// Item not in stock.
