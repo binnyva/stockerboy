@@ -92,7 +92,7 @@
     
         <div class="tab_container">
             <div id="tab1" class="tab_content">
-           	  <h2 class="heading">Enter Sales</h2>
+           	  <h2 class="heading">Enter Sales in Bulk</h2>
               <div id="msg_div"></div>
 			  
 			  <form action="<?php echo site_url('sales/add_sales_new')?>" method="post" id="sales-form" onSubmit="return validate();">
@@ -105,6 +105,7 @@
 </div>
 
 <a href="javascript:addMoreItems(10);" class="addmoreLink right">Add 10 more fields...</a><br />
+<a href="<?php echo site_url('sales/sales_views'); ?>" class="addmoreLink right">Enter Sales Individually</a>
 
 <input name="button" type="submit" class="addButton" id="button" value="" />
 <br />

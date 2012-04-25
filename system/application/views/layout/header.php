@@ -59,7 +59,6 @@ try {
     <li><a id="prod" title="Products" href="<?php echo site_url('products/products_view') ?>"><img src="<?php echo base_url(); ?>/images/products.png" /></a></li>
     <li><a id="stk" title="Stock" href="<?php echo site_url('stock/stock_view') ?>"><img src="<?php echo base_url(); ?>/images/stock.png" /></a></li>
     <li><a id="sls" title="Sales" href="<?php echo site_url('sales/sales_view') ?>"><img src="<?php echo base_url(); ?>/images/sales.png" /></a></li>
-    <li><a id="slss" title="Sales" href="<?php echo site_url('sales/sales_views') ?>"><img src="<?php echo base_url(); ?>/images/sales.png" /></a></li>
     <li><a id="fin" title="Revenue" href="<?php echo site_url('revenue/') ?>"><img src="<?php echo base_url(); ?>/images/finance.png" /></a></li>
   </ul>
 </div>
