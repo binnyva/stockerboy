@@ -50,6 +50,18 @@ class Stock extends Controller  {
 		$this->load->view('layout/footer');
 	}
 	
+	function stock_view_all() {
+		$data['title'] = 'Stocker Boy | Stock';
+		$this->load->model('city_model');
+		
+		$all_cities = idNameFormat($this->city_model->get_all());
+		$stock_data = $this->stock_model->get_all();
+		
+		$this->load->view('layout/header',$data);
+		$this->load->view('stock/stock_view_all', array('all_cities'=>$all_cities, 'stock_data'=>$stock_data));
+		$this->load->view('layout/footer');
+	}
+	
 	function add_stock() {
 		$item_code = $this->input->post('item_code');
 		$amount = $this->input->post('amount');

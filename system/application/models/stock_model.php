@@ -92,11 +92,15 @@ class Stock_model extends Model {
 		return $message;
 	}
 	
-	function get_all($city_id) {
-		return $this->db->query("SELECT stock.id, item.code, item.color, item.size, item.sex, item.price, design.name, design.img_name, stock.amount 
+	function get_all($city_id = false) {
+		$city = "";
+		if($city_id) $city = "WHERE stock.city_id=$city_id";
+		
+		return $this->db->query("SELECT stock.id, stock.city_id, item.code, item.color, item.size, item.sex, item.price, design.name, design.img_name, stock.amount 
 			FROM stock INNER JOIN item ON stock.item_id=item.id 
 			INNER JOIN design ON item.design_id = design.id
-			WHERE stock.city_id=$city_id")->result();
+			$city
+			ORDER BY stock.city_id")->result();
 	}
 	
 	function get_all_transits($city_id, $status='') {

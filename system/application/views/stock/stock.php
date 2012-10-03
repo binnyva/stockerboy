@@ -70,7 +70,7 @@ function stock_by_city(cid)
 			<?php } ?>
 			
 			<h3>Current Stock</h3>
-			<?php echo form_dropdown('to_city_id', $all_cities, '', 'class="select" onchange="javascript:stock_by_city(this.value);"'); ?>
+			<?php echo form_dropdown('to_city_id', $all_cities, '', 'class="select" onchange="javascript:stock_by_city(this.value);"'); ?> <a href="<?php echo site_url('stock/stock_view_all'); ?>">See All</a>
                 <table class="data-table" id="stock-table">
                 <tr><th>Code</th><th>Photo</th><th>Sex</th><th>Size</th><th>Colour</th><th>Number</th><th>Price</th></tr>
                 <?php foreach($stock_data as $row) { ?>
