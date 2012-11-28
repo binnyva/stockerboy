@@ -256,7 +256,7 @@ ul.tabs li.active, ul.tabs li.active a:hover  { /*--Makes sure that the active t
 
 
 /* Specific to example one */
-#example-one, #example-two { padding:20px 30px; margin: 0 0 20px 0; background:#f5f5f5; width:860px; float:left;}
+#example-one, #example-two { padding:20px 30px; margin: 0 0 20px 0; background:#f5f5f5; width:860px; float:left; height: 300px;}
 
 #example-one .nav { overflow: hidden; margin: 0 0 10px 0; padding:10px 0; border-bottom:1px solid #ebebeb;border-top:1px solid #ebebeb }
 #example-one .nav li { width: 120px; float: left; margin: 0 50px 0 0; }
