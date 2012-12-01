@@ -77,4 +77,41 @@ class Common extends Controller {
 		$this->load->library('sms');
 		$this->sms->send('9746068565', $text);
 	}
+	
+	function add_stock() {
+		$designs = array(1,2,3);
+		
+		$item_template = array(
+				'code' 			=> '',
+				'product_id'	=> 1,
+				'design_id'		=> '',
+				'size'			=> '',
+				'sex'			=> '',
+				'color'			=> '',
+				'price'			=> 350,
+				'national_cut'	=> 200,
+				'city_cut'		=> 150,
+			);
+		$all_sizes = array('S', 'M', 'L', 'XL');
+		$all_sex = array('m', 'f');
+		print '<pre>';
+		$code_count = 1;
+		foreach($designs as $design_id) {
+			foreach($all_sex as $sex) {
+				foreach($all_sizes as $size) {
+					if($sex == 'f' and $size == 'XL') continue;
+					$item = $item_template;
+					
+					$item['size'] = $size;
+					$item['sex'] = $sex;
+					$item['design_id'] = $design_id;
+					$item['code'] = str_pad($code_count, 5, '0', STR_PAD_LEFT);
+					$this->db->insert('item', $item);
+					print_r($item);
+					
+					$code_count++;
+				}
+			}			
+		}
+	}
 }
